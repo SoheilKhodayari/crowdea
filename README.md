@@ -27,8 +27,9 @@ For newly developed features, use gitflow (default naming style is feature/branc
 Learn more about gitflow commands here: https://danielkummer.github.io/git-flow-cheatsheet/
 
 gitflow commands have comparable commands in git, i.e. if you use are on develop branch and use:
-git branch -b feature/branch_name
-git push origin feature/branch_name
+```git branch -b feature/branch_name```
+
+```git push origin feature/branch_name```
 
 but after merging with the develop branch, feature_branch needs to be deleted manually this way.
 
