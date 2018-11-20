@@ -6,7 +6,7 @@ Make sure to have django version 1.11.16  and Python 2.7.5 Installed.
 
 Once you have Python & pip installed, you can quickly download all dependencies by:
 
-```pip install requirements.txt -r```
+```pip install -r requirements.txt```
 
 ## Database Configuration
 
