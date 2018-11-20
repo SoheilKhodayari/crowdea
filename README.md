@@ -18,3 +18,10 @@ Once you have everything ready, you can create a super user account for the admi
 ## Running 
 The website can be runned by the command ```python manage.py runserver PORT_NUMBER``` executed in the base directory. If PORT_NUMBER is not provided, the default port will be 8000. Assuming you are using the default port, open the browser and navigate to ```localhost:8000```.
 
+## Contribution & Commit Guidlines
+### Important
+please use the develop branch for all the development purposes and issue a merge request.
+
+For newly developed features, use gitflow (default naming style is feature/branch_name)
+
+Learn more about gitflow commands here: https://danielkummer.github.io/git-flow-cheatsheet/
