@@ -6,7 +6,7 @@ Make sure to have django version 1.11.16  and Python 2.7.5 Installed.
 
 Once you have Python & pip installed, you can quickly download all dependencies by:
 
-```pip install -r requirements.txt```
+```pip install requirements.txt -r```
 
 ## Database Configuration
 
@@ -25,3 +25,10 @@ please use the develop branch for all the development purposes and issue a merge
 For newly developed features, use gitflow (default naming style is feature/branch_name)
 
 Learn more about gitflow commands here: https://danielkummer.github.io/git-flow-cheatsheet/
+
+gitflow commands have comparable commands in git, i.e. if you use are on develop branch and use:
+git branch -b feature/branch_name
+git push origin feature/branch_name
+
+but after merging with the develop branch, feature_branch needs to be deleted manually this way.
+
