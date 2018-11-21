@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import django.contrib.auth as auth
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -11,14 +12,26 @@ from crowdea.utility import reverse_with_query
 # Create your views here.
 
 def getLogin(request):
-	return render(request, "authentication/login.html", {})
+    return render(request, "authentication/login.html", {})
 
 @require_POST
 def postLogin(request):
-	username = request.POST["email"]
-	password = request.POST["password"]
 
-	return HttpResponse(username + password)
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
+
+    user = auth.authenticate(username=username, password=password)
+
+    if user is None:
+        error = 'Wrong credentials try again'
+        return HttpResponseRedirect(reverse_with_query("authApp:getLogin", {"error": error}))
+
+    auth.login(request, user)
+    return HttpResponseRedirect(reverse_lazy("index"))
+
+def getLogout(request):
+    auth.logout(request)
+    return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
 
 def getRegister(request):
 	return render(request, "authentication/register.html", {})
@@ -46,8 +59,3 @@ def postRegister(request):
 	else:
 		query_kwargs = {"Reg-Msg":"Error-Username-Exists"}
 		return HttpResponseRedirect(reverse_with_query("authApp:getRegister", query_kwargs))	
-
-
-
-
-

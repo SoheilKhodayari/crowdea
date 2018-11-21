@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^post-login$', views.postLogin, name="postLogin"),
     url(r'^registration$', views.getRegister, name="getRegister"),
     url(r'^post-registration$', views.postRegister, name="postRegister"),
+    url(r'^logout$', views.getLogout, name="getLogout")
 ]
 
 
