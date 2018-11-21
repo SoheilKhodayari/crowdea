@@ -20,10 +20,8 @@ def postLogin(request):
 
 	return HttpResponse(username + password)
 
-
 def getRegister(request):
 	return render(request, "authentication/register.html", {})
-
 
 @require_POST
 def postRegister(request):
@@ -34,18 +32,19 @@ def postRegister(request):
 	lastname = request.POST.get("lastname", "")
 
 	if username == "" or password == "" or firstname == "" or lastname == "":
-		query_kwargs = {"Reg-Error":"Incomplete-Data"}
+		query_kwargs = {"Reg-Msg":"Incomplete-Data"}
 		return HttpResponseRedirect(reverse_with_query("authApp:getRegister",query_kwargs))
 	
 	user, created = User.objects.get_or_create(username=username)
 	if created:
-		user.password = password
+		user.set_password(password)
 		user.first_name = firstname
-		user.last_name = last_name
+		user.last_name = lastname
 		user.save()
-		return render(request, "index.html", {"user": user})
+		query_kwargs = {"Reg-Msg":"Successful"}
+		return HttpResponseRedirect(reverse_with_query("index",query_kwargs))
 	else:
-		query_kwargs = {"Reg-Error":"Error-Username-Exists"}
+		query_kwargs = {"Reg-Msg":"Error-Username-Exists"}
 		return HttpResponseRedirect(reverse_with_query("authApp:getRegister", query_kwargs))	
 
 
