@@ -24,6 +24,11 @@ jobs:
           - v1-dependencies-
 
       - run:
+          name: Creating folder for test reports
+          command: |
+            mkdir test-reports;
+            mkdir test-results
+      - run:
           name: install dependencies
           command: |
             python3 -m venv venv
@@ -41,11 +46,7 @@ jobs:
             . venv/bin/activate
             python manage.py test
 
-      - run:
-          name: Creating folder for test reports
-          command: |
-            mkdir test-reports;
-            mkdir test-results
+      
       - store_artifacts:
           path: test-reports
       - store_test_results:
