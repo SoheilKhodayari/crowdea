@@ -1,2 +1,1 @@
 Django==1.11.16
-mysql-connector-python==2.0.4
