@@ -55,7 +55,11 @@ def postRegister(request):
 		user.last_name = lastname
 		user.save()
 		query_kwargs = {"Reg-Msg":"Successful"}
+		
+		auth.login(request, user)
 		return HttpResponseRedirect(reverse_with_query("index",query_kwargs))
 	else:
 		query_kwargs = {"Reg-Msg":"Error-Username-Exists"}
-		return HttpResponseRedirect(reverse_with_query("authApp:getRegister", query_kwargs))	
+		return HttpResponseRedirect(reverse_with_query("authApp:getRegister", query_kwargs))
+
+
