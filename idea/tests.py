@@ -21,8 +21,8 @@ class IdeaTest(TestCase):
             username='testuser', password='1X<ISRUkw+tuK')
 
     def test_add_idea_successful(self):
-	add_idea_endpoint = reverse("ideaApp:postAddIdea")
-	response = self.client.post(add_idea_endpoint,
+        add_idea_endpoint = reverse("ideaApp:postAddIdea")
+        response = self.client.post(add_idea_endpoint,
 		{'idea-title': 'testIdea', 'idea-text': 'idea content', 'user': self.test_user, 'is_active': 'on'}		, follow=True)
 
         self.assertEqual(response.status_code, 200)
@@ -31,7 +31,7 @@ class IdeaTest(TestCase):
         self.assertRedirects(response, success_url)
 
     def test_add_idea_failure(self):
-    	add_idea_endpoint = reverse("ideaApp:postAddIdea")
+	add_idea_endpoint = reverse("ideaApp:postAddIdea")
         response = self.client.post(add_idea_endpoint, 
             {'idea-title': 'testIdea', 'idea-text': '', 'user': self.test_user, 'is_active': 'on'}
             , follow=True)
