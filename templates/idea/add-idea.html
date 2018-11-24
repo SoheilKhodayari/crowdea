@@ -1,0 +1,7 @@
+<form method="post" action="{% url 'ideaApp:postAddIdea' %}">
+ {% csrf_token %}
+ <input type="text" name="idea-title" placeholder="title" / >
+  <input type="text" name="idea-text" placeholder="content" />
+  <input type="checkbox" name="is-active" placeholder="content" />
+  <input type="submit" name="submit"/>
+</form>

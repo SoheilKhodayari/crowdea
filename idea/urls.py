@@ -15,11 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from idea import views
+from . import views
 
 urlpatterns = [
 
-    url(r'^add-idea$', views.getAddIdea, name="getAddIdea"),
+    url(r'^get-add-idea$', views.getAddIdea, name="getAddIdea"),
     url(r'^add-idea$', views.postAddIdea, name="postAddIdea")
 ]
 
