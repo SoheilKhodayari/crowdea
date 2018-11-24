@@ -22,5 +22,3 @@ urlpatterns = [
     url(r'^get-add-idea$', views.getAddIdea, name="getAddIdea"),
     url(r'^add-idea$', views.postAddIdea, name="postAddIdea")
 ]
-
-
