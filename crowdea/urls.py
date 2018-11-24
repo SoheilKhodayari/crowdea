@@ -19,7 +19,7 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'index^$', views.index, name='index'),
+    url(r'^index$', views.index, name='index'),
     url(r'^$', views.getLandingIndex, name='getLandingIndex'),
     url(r'', include('authentication.urls', namespace='authApp')),
     url(r'', include('idea.urls', namespace='ideaApp')),
