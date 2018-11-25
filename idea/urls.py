@@ -1,4 +1,4 @@
-"""crowdea URL Configuration
+"""testserver URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
@@ -18,9 +18,7 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^index$', views.index, name='index'),
-    url(r'^$', views.getLandingIndex, name='getLandingIndex'),
-    url(r'', include('authentication.urls', namespace='authApp')),
-    url(r'', include('idea.urls', namespace='ideaApp')),
+
+    url(r'^get-add-idea$', views.getAddIdea, name="getAddIdea"),
+    url(r'^add-idea$', views.postAddIdea, name="postAddIdea")
 ]
