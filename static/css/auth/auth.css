@@ -124,3 +124,29 @@ body {
   font-weight: normal;
   font-size: 1em;
 }
+
+p.reg-info {
+  color: #dc3545;
+  margin-bottom: 3px;
+  font-size: 0.9em;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+p.reg-info-box {
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  background-color: #f1d0d4;
+  padding-bottom: 7px;
+  padding-top: 7px;
+  padding-right: 7px;
+  padding-left: 7px;
+  font-size: 0.9em;
+}
+
+.password-tip {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+}
