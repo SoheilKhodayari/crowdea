@@ -1,0 +1,31 @@
+{% extends "../layouts/main_layout.html" %}
+{% load staticfiles %}
+
+{% block stylesheet %}
+<!-- Website Font style -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="{% static 'css/auth/register.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1>This stuff works...</h1>
+
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    /* toggle password visibility */
+    if('{{error}}'){
+    	console.log('Yes');
+    }
+    else{
+    	console.log('No');
+    }
+  });
+</script>
+{% endblock %}

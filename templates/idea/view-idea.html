@@ -1,0 +1,58 @@
+{% extends "../layouts/main_layout.html" %}
+{% load staticfiles %}
+
+{% block stylesheet %}
+<!-- Website Font style -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="{% static 'css/auth/register.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ idea.title }}</h5>
+              <table>
+                  <tr>
+                  <td>Description:</td>
+                  <td>{{ idea.idea }}</td>
+              </tr>
+              <tr>
+                  <td>Active:</td>
+                  <td>{{ idea.is_active }}</td>
+              </tr>
+              <tr>
+                  <td>Date created:</td>
+                  <td>{{ idea.meta_created_at }}</td>
+              </tr>
+              <tr>
+                  <td>Last updated:</td>
+                  <td>{{ idea.meta_last_updated_at }}</td>
+              </tr>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    /* toggle password visibility */
+    if('{{error}}'){
+    	console.log('Yes');
+    }
+    else{
+    	console.log('No');
+    }
+  });
+</script>
+{% endblock %}
