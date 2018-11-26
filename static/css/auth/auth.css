@@ -9,6 +9,10 @@ body {
   background-repeat: no-repeat;
 }
 
+.div-main-content {
+    margin-top: 25px !important;
+    margin-bottom: 100px !important;
+}
 .card-signin {
   border: 0;
   border-radius: 1rem;
@@ -45,7 +49,13 @@ body {
 
 .form-label-group input {
   border-radius: 2rem;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  line-height: 3px !important;
+  height: 3px !important;
 }
+
+
 
 .form-label-group>input,
 .form-label-group>label {
@@ -90,12 +100,13 @@ body {
 .form-label-group input:not(:placeholder-shown) {
   padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
   padding-bottom: calc(var(--input-padding-y) / 3);
+  font-size: 1em;
 }
 
 .form-label-group input:not(:placeholder-shown)~label {
   padding-top: calc(var(--input-padding-y) / 3);
   padding-bottom: calc(var(--input-padding-y) / 3);
-  font-size: 12px;
+  font-size: 0.6em;
   color: #777;
 }
 
@@ -107,4 +118,35 @@ body {
 .btn-facebook {
   color: white;
   background-color: #3b5998;
+}
+
+.form-label-group label {
+  font-weight: normal;
+  font-size: 1em;
+}
+
+p.reg-info {
+  color: #dc3545;
+  margin-bottom: 3px;
+  font-size: 0.9em;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+p.reg-info-box {
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  background-color: #f1d0d4;
+  padding-bottom: 7px;
+  padding-top: 7px;
+  padding-right: 7px;
+  padding-left: 7px;
+  font-size: 0.9em;
+}
+
+.password-tip {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 8px;
+  font-size: 0.9em;
 }

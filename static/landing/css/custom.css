@@ -1,0 +1,39 @@
+/* Your custom css code goes here */
+
+/* top header class*/
+.probootstrap-header {
+	background-color: white !important;
+	background: white !important;
+}
+.container-fluid {
+	padding-bottom: 30px;
+}
+
+.btn-primary {
+	background-color: #2e6da4 !important;
+}
+.btn-primary:hover{
+	border: 1px solid #5f98ca !important;
+	background-color: #0080f1 !important;
+}
+
+.probootstrap-logo {
+	color: #479fe8;
+}
+
+
+.probootstrap-main-nav li a {
+	color: #007bff !important;
+}
+
+.probootstrap-main-nav li a:hover {
+	color: black !important;
+}
+
+.probootstrap-main-nav li.probootstrap-cta a {
+	border: 1px solid #007bff !important;
+}
+.probootstrap-main-nav li.probootstrap-cta a:hover {
+	background-color: #479fe8 !important;
+	color: white !important;
+}
