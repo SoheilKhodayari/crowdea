@@ -1,11 +1,14 @@
-{% extends "../layouts/main_layout.html" %}
+{% extends "../layouts/general_layout.html" %}
 {% load staticfiles %}
 
 {% block stylesheet %}
 <!-- Website Font style -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
-<link rel="stylesheet" href="{% static 'css/auth/register.css' %}">
+<link rel="stylesheet" href="{% static 'css/auth/auth.css' %}">
+{% endblock %}
+
+{% block headerextra %}
 {% endblock %}
 
 {% block content %}
@@ -39,6 +42,7 @@
       </div>
     </div>
   </div>
+
 
 {% endblock %}
 
