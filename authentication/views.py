@@ -45,7 +45,7 @@ def postRegister(request):
 	lastname = request.POST.get("lastname", "")
 
 	if username == "" or password == "" or firstname == "" or lastname == "":
-		query_kwargs = {"Reg-Msg":"Incomplete-Data"}
+		query_kwargs = {"Status":"Incomplete or missing data!"}
 		return HttpResponseRedirect(reverse_with_query("authApp:getRegister",query_kwargs))
 	
 	user, created = User.objects.get_or_create(username=username)
@@ -54,12 +54,12 @@ def postRegister(request):
 		user.first_name = firstname
 		user.last_name = lastname
 		user.save()
-		query_kwargs = {"Reg-Msg":"Successful"}
+		query_kwargs = {"Status":"Successful"}
 		
 		auth.login(request, user)
 		return HttpResponseRedirect(reverse_with_query("index",query_kwargs))
 	else:
-		query_kwargs = {"Reg-Msg":"Error-Username-Exists"}
+		query_kwargs = {"Status":"Error: email already exists!"}
 		return HttpResponseRedirect(reverse_with_query("authApp:getRegister", query_kwargs))
 
 
