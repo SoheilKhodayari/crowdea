@@ -1,0 +1,52 @@
+{% extends "../layouts/main_layout.html" %}
+{% load staticfiles %}
+
+{% block stylesheet %}
+<!-- Website Font style -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <style>
+        body {
+            background-image: url("../../static/assets/auth_background.jpg");
+            background-repeat: no-repeat;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container div-main-content">
+        {% for idea in ideas %}
+            <div class="row">
+                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                    <div class="card card-signin my-5">
+                        <div class="card-body">
+                            <div>
+                                <p>{{ idea.title }}</p>
+                                {{ idea.idea }}
+                            </div>
+                            <a class="btn btn-light btn-primary btn-block"
+                               href="{% url 'ideaApp:getIdeaById' idea.id %}">
+                                View idea</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    /* toggle password visibility */
+    if('{{error}}'){
+    	console.log('Yes');
+    }
+    else{
+    	console.log('No');
+    }
+  });
+</script>
+{% endblock %}
