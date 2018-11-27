@@ -21,6 +21,31 @@ def getAddIdeaOnSuccessRedirectUrl():
 	url_return_on_success = reverse_with_query("ideaApp:getAddIdea", kwargs)
 	return url_return_on_success
 
+@require_POST
+def postAddIdea(request):
+
+    title = request.POST.get("idea-title", "")
+    idea_text = request.POST.get("idea-text", "")
+    is_active = request.POST.get("is-active", "")
+
+
+    if title == "" or idea_text == "":
+    	kwargs = {"Msg": "Error-Invalid-Data"}
+    	url_return_on_failure = reverse_with_query("ideaApp:getAddIdea", kwargs)
+    	return HttpResponseRedirect(url_return_on_failure)
+
+    else:
+    	if is_active=="on":
+    		active = True 
+    	else:
+    		active = False
+    	ideaInstance = Idea.objects.create(title=title, idea=idea_text, 
+    		is_active=active, user=request.user)
+    	ideaInstance.save()
+
+    	return_url = getAddIdeaOnSuccessRedirectUrl()
+    	return HttpResponseRedirect(return_url)
+
 def getFilterIdeas(request):
 	if not request.user.is_authenticated():
 		return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
@@ -48,37 +73,12 @@ def getAllIdeas(request):
 	#print(ideas.__len__())
 	return render(request, "idea/view-ideas.html", {'ideas': ideas})
 
-def getIdeaById(request, id):
+def getIdeaById(request, ideaId):
 	if not request.user.is_authenticated():
 		return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
-	idea = Idea.objects.get(id = id)
-	#print(id)
-	#print(idea.title)
+	idea = Idea.objects.get(id = ideaId)
 	return render(request, "idea/view-idea.html", {'idea': idea})
 
-@require_POST
-def postAddIdea(request):
 
-    title = request.POST.get("idea-title", "")
-    idea_text = request.POST.get("idea-text", "")
-    is_active = request.POST.get("is-active", "")
-
-
-    if title == "" or idea_text == "":
-    	kwargs = {"Msg": "Error-Invalid-Data"}
-    	url_return_on_failure = reverse_with_query("ideaApp:getAddIdea", kwargs)
-    	return HttpResponseRedirect(url_return_on_failure)
-
-    else:
-    	if is_active=="on":
-    		active = True 
-    	else:
-    		active = False
-    	ideaInstance = Idea.objects.create(title=title, idea=idea_text, 
-    		is_active=active, user=request.user)
-    	ideaInstance.save()
-
-    	return_url = getAddIdeaOnSuccessRedirectUrl()
-    	return HttpResponseRedirect(return_url)
 
 

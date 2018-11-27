@@ -64,10 +64,12 @@ class IdeaTest(TestCase):
                          {'idea-title': 'testIdea', 'idea-text': 'idea content', 'user': self.test_user,
                           'is_active': 'on'}, follow=True)
         # TODO: problem here. how can I get the id of a freshly generated idea?
+        #   --->> ANSWER: you need to create a fake idea (say ideaInstance) in setUp method, then id = ideaInstance.pk
         # viewing idea now:
         # TODO: problem here. please, help with getting the endpoint. these attempts didn't work
         #view_idea_endpoint = reverse("ideaApp:getIdeaById", id=1)
-        view_idea_endpoint = reverse("ideaApp:getIdeaById", kwargs={'id':1})
+        # ---->> ANSWER: the way you pass it should be like below: remember that the slug name "ideaId" is defined in urls.py 
+        view_idea_endpoint = reverse("ideaApp:getIdeaById", kwargs={'ideaId':1})
         #response = self.client.get(view_idea_endpoint)
         # checking http status
         #self.assertEqual(response.status_code, 200)
