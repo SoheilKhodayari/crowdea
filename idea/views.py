@@ -16,7 +16,6 @@ def getAddIdea(request):
 		return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
 	return render(request, "idea/add-idea.html", {})
 
-
 def getAddIdeaOnSuccessRedirectUrl():
 	kwargs = {"Msg": "Created-Successfully"}
 	url_return_on_success = reverse_with_query("ideaApp:getAddIdea", kwargs)
@@ -28,8 +27,8 @@ def getFilterIdeas(request):
 	return render(request, "idea/filter-ideas.html", {})
 
 def getFilteredIdeas(request, keyword):
-	#if not request.user.is_authenticated():
-	#	return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
+	if not request.user.is_authenticated():
+		return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
 	print("Hello World!")
 	# Disclaimer: this stuff does not work yet!
 	if keyword and keyword.strip():

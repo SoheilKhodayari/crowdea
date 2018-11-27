@@ -43,7 +43,7 @@
           <ul class="probootstrap-main-nav">
               <li><a href="{% url 'getLandingIndex' %}">Home</a></li>
             <li><a href="{% url 'ideaApp:getAllIdeas' %}">Explore ideas</a></li>
-            <li><a href="{% url 'ideaApp:postAddIdea' %}">Publish idea</a></li>
+            <li><a href="{% url 'ideaApp:getAddIdea' %}">Publish idea</a></li>
             <li><a href="{% url 'authApp:getLogout' %}">Log out</a></li>
           </ul>
           <div class="extra-text visible-xs">
@@ -68,7 +68,6 @@
 
 <!-- Begin main content -->
 {% block content %}
-
 {% endblock %}
 <!-- End main content -->
 
