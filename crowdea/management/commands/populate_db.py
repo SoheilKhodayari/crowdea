@@ -5,11 +5,11 @@ from datetime import datetime
 from django.contrib.auth.models import User
 
 users_info = [
-    {'username': 'thor', 'password': 'thor1234'},
-    {'username': 'loki', 'password': 'loki1234'},
-    {'username': 'odin', 'password': 'odin1234'},
-    {'username': 'nemo', 'password': 'nemo1234'},
-    {'username': 'dori', 'password': 'dori1234'}]
+    {'username': 'thor@valhala.sky', 'password': 'thor1234'},
+    {'username': 'loki@valhala.sky', 'password': 'loki1234'},
+    {'username': 'odin@valhala.sky', 'password': 'odin1234'},
+    {'username': 'nemo@pacific.oc', 'password': 'nemo1234'},
+    {'username': 'dori@pacific.oc', 'password': 'dori1234'}]
 users = [] # Filled by script
 
 ideas_info = [
