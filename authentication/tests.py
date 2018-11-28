@@ -102,7 +102,7 @@ class RegisterTest(TestCase):
         response = self.client.post(self.register_endpoint, kwargs ,follow=True)
 
         # expected
-        success_query_kwargs = {"Reg-Msg":"Successful"}
+        success_query_kwargs = {"Status":"Successful"}
         success_url = reverse_with_query("index", success_query_kwargs)
 
         # assert and compare
@@ -119,7 +119,7 @@ class RegisterTest(TestCase):
         response = self.client.post(self.register_endpoint, kwargs ,follow=True)
 
         # expected:
-        error_query_kwargs = {"Reg-Msg":"Error-Username-Exists"}
+        error_query_kwargs = {"Status":"Error: email already exists!"}
         success_url = reverse_with_query("authApp:getRegister",error_query_kwargs)
 
         # assert the application don't breaks
@@ -139,7 +139,7 @@ class RegisterTest(TestCase):
         response = self.client.post(self.register_endpoint, kwargs ,follow=True)
 
         # expected:
-        error_query_kwargs = {"Reg-Msg":"Incomplete-Data"}
+        error_query_kwargs = {"Status":"Incomplete or missing data!"}
         success_url = reverse_with_query("authApp:getRegister",error_query_kwargs)
 
         # assert the application don't breaks

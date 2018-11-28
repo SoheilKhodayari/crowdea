@@ -1,0 +1,73 @@
+
+body {
+
+  background-image: url("../../assets/auth_background.jpg"); 
+  background-repeat: no-repeat;
+}
+
+
+.input-group-prepend {
+  display: inline-block !important;
+}
+
+input.form-control {
+  display: inline-block !important;
+  margin-bottom: 10px !important;
+}
+
+div.btn-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+button, button > a {
+  font-weight: normal;
+  font-size: 0.75em;
+  color: white !important;
+  height: 15px;
+  margin-top: 10px;
+  line-height: 0px !important;
+  text-align: center;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+button.submit-btn {
+  font-weight: normal;
+  font-size: 0.85em;
+  color: white !important;
+  height: 15px;
+  margin-top: 10px;
+  line-height: 0px !important;
+  text-align: center;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+button > a:hover{
+  color: white !important;
+  text-decoration: none;
+}
+
+
+input[type=checkbox].form-check-input {
+  margin-top: 5px  !important;
+  margin-left: 0px !important;
+}
+
+label.form-check-label {
+  margin-left: 25px;
+  font-weight: normal;
+  font-size: 0.9em;
+}
+
+p.reg-info {
+  color: #dc3545;
+  margin-bottom: 3px;
+  font-size: 0.9em;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+div.reg-box {
+  margin-bottom: 10px;
+}
+
