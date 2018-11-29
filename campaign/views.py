@@ -6,6 +6,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.views.decorators.http import require_GET
 from .models import Campaign
+from django.http import Http404 
+from django.http import HttpResponseNotFound
 
 
 @require_GET
@@ -20,8 +22,12 @@ def getAllCampaigns(request):
 def getCampaignById(request, id):
 	if not request.user.is_authenticated():
 		return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
-		
-	campaign = Campaign.objects.get(id=id)
+	
+	try:
+		campaign = Campaign.objects.get(id=id)
+	except Exception as e:
+		return HttpResponseNotFound('<h1>404: Campaign not found</h1>')
+
 	return render(request, "campaign/view-campaign.html", {'campaign': campaign})
 
 
