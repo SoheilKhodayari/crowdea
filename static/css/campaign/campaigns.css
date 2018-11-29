@@ -1,0 +1,9 @@
+body {
+
+  background-image: url("../../assets/auth_background.jpg"); 
+  background-repeat: repeat-y;
+}
+
+.title {
+  color: white;
+}
