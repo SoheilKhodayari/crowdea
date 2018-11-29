@@ -15,6 +15,7 @@ class IdeaTest(TestCase):
         self.test_user.save()
         login = self.client.login(
         username='testuser', password='1X<ISRUkw+tuK')
+        
 
     def test_add_idea_successful(self):
         add_idea_endpoint = reverse("ideaApp:postAddIdea")
