@@ -16,8 +16,11 @@
 
     <div class="container div-main-content">
         {% for idea in ideas %}
+            {% if forloop.counter0|divisibleby:3 %}
             <div class="row">
-                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            {% endif %}
+
+                <div class="col-sm-6 col-md-4 col-lg-4">
                     <div class="card card-signin my-5">
                         <div class="card-body">
                             <div>
@@ -25,13 +28,19 @@
                                 <div style="margin-bottom: 16px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                     {{ idea.idea }}</div>
                             </div>
+                            <div class="row">
                             <a class="btn btn-light btn-primary btn-block"
                                href="{% url 'ideaApp:getIdeaById' idea.id %}">
                                 View idea</a>
+                            </div>
+
                         </div>
                     </div>
                 </div>
+            {% if forloop.counter|divisibleby:3 %}
             </div>
+            {% elif forloop.last %}</div> 
+            {% endif %}
         {% endfor %}
     </div>
 
