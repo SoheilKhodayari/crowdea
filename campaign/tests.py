@@ -4,147 +4,162 @@ from __future__ import unicode_literals
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from crowdea.utility import reverse_with_query
+from idea.models import Idea
+from .models import Campaign
+from datetime import datetime
 
 # Create your tests here.
-class LoginTest(TestCase):
+class CampaignTest(TestCase):
 
     def setUp(self):
-        # Create a user
-        test_user1 = User.objects.create_user(username='testuser1', password='1X<ISRUkw+tuK')
-        test_user1.save()
+        # Create two users
+        self.test_user1 = User.objects.create_user(username='testuser1', password='1X<ISRUkw+tuK')
+        self.test_user1.save()
 
-        self.login_fail_msg = '?error=Wrong+credentials+try+again'
+        ideas_info = [
+            {'title': 'New app for food delivery', 
+             'is_active':True,
+             'idea': 'incidunt non ac eros. Vestibulum ante '\
+             'ipsum primis in faucibus orci luctus et ultrices'\
+             'posuere cubilia urae; Sed convallis, leo at'\
+             'fringilla faucibus, ante purus tempus libero, non'\
+             'ravida elit sapien a mi. Aliquam laoreet, dui'\
+             'pulvinar tempus efficitur, sapien ci placerat'\
+             'enim, it amet fringilla risus risus et lectus.',
+             'meta_created_at': '05/08/2018',
+             'meta_last_updated_at': '11/10/2018'},
+            {'title': 'The perfect ecommerce website', 
+             'is_active':True,
+             'idea': 'Lorem ipsum dolor sit amet, consectetur' \
+             'adipiscing elit. Nam blandit suscipit massa quis' \
+             'pharetra. Aliquam aliquam pretium consectetur.' \
+             'Sed lorem sapien, blandit sed suscipit id,' \
+             'tristique sed tellus. Integer elementum pharetra ' \
+             'odio eu vestibulum. Aenean et neque et mi aliquet ',
+             'meta_created_at': '05/10/2018',
+             'meta_last_updated_at': '25/11/2018'}]
+        self.ideas = self._create_ideas(ideas_info, self.test_user1)
 
-    # GET
-    def test_get_url_exists_at_desired_location(self):
-        response = self.client.get('/login')
+        campaigns_info = [
+            {'idea': 0,
+             'description': 'Integer pellentesque ornare' \
+             ' diam, id blandit neque dictum sit amet. Etiam' \
+             ' ultrices est ac lorem commodo gravida. Phasellus' \
+             ' scelerisque tortor tincidunt lacus ornare, a finibus' \
+             ' turpis tristique. Donec tortor nisl, maximus ut'\
+             'volutpat sit amet, sodales ut odio. ',
+             'campaign_target_sum': 20000,
+             'campaign_collected_sum': 0,
+             'meta_created_at': '28/11/2018',
+             'meta_campaign_deadline': '01/02/2019'},
+            {'idea': 1,
+             'description': 'Integer pellentesque ornare' \
+             ' diam, id blandit neque dictum sit amet. Etiam' \
+             ' ultrices est ac lorem commodo gravida. Phasellus' \
+             ' scelerisque tortor tincidunt lacus ornare, a finibus' \
+             ' turpis tristique. Donec tortor nisl, maximus ut'\
+             'volutpat sit amet, sodales ut odio. ',
+             'campaign_target_sum': 5000,
+             'campaign_collected_sum': 0,
+             'meta_created_at': '23/10/2018',
+             'meta_campaign_deadline': '31/12/2019'}]
+        self.campaigns = self._create_campaigns(campaigns_info, self.ideas, self.test_user1)
+
+    def _create_ideas(self, ideas_info, user):
+        result = []
+        for info in ideas_info:
+            idea = Idea.objects.create(
+                title=info['title'], 
+                idea=info['idea'], 
+                is_active=info['is_active'], 
+                user=user,
+                meta_created_at=datetime.strptime(info['meta_created_at'], '%d/%m/%Y'),
+                meta_last_updated_at=datetime.strptime(info['meta_last_updated_at'], '%d/%m/%Y'))
+            idea.save()
+            result.append(idea)
+        return result
+
+    def _create_campaigns(self, campaigns_info, ideas, user):
+        result = []
+        for info in campaigns_info:
+            campaign = Campaign.create(
+                user=user,
+                idea=ideas[info['idea']],
+                description=info['description'],
+                c_target=info['campaign_target_sum'],
+                c_deadline=datetime.strptime(info['meta_campaign_deadline'], '%d/%m/%Y'))
+            campaign.save()
+            result.append(campaign)
+        return result
+
+    # Campaigns
+    def test_view_campaigns_url_exists_at_desired_location(self):
+        login = self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+        response = self.client.get('/campaigns')
         self.assertEqual(response.status_code, 200)
 
-    def test_get_url_accessible_by_name(self):
-        response = self.client.get(reverse("authApp:getLogin"))
+    def test_view_campaigns_url_accessible_by_name(self):
+        login = self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+        response = self.client.get(reverse("campaignApp:getAllCampaigns"))
         self.assertEqual(response.status_code, 200)
 
-    def test_get_uses_correct_template(self):
-        response = self.client.get(reverse("authApp:getLogin"))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'authentication/login.html')
+    def test_view_campaigns_url_uses_correct_template(self):
+        login = self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+        response = self.client.get(reverse("campaignApp:getAllCampaigns"))
+        self.assertTemplateUsed(response, 'campaign/view-campaigns.html')   
 
-    # POST
-    def test_login_succesfull_with_corrent_user(self):
-        response = self.client.post(reverse("authApp:postLogin"), 
-            {'username': 'testuser1', 'password': '1X<ISRUkw+tuK'}, follow=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.context['user'].is_active)
-
-    def test_redirects_to_index_on_success(self):
-        response = self.client.post(reverse("authApp:postLogin"), 
-            {'username': 'testuser1', 'password': '1X<ISRUkw+tuK'}, follow=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse("index"))
-
-    def test_login_fails_with_invalid_user(self):
-        response = self.client.post(reverse("authApp:postLogin"), 
-            {'username': 'test', 'password': 'test'}, follow=True)
-        self.assertRedirects(response, '%s%s' % (reverse("authApp:getLogin"),self.login_fail_msg))
-
-    def test_login_fails_with_missing_username(self):
-        response = self.client.post(reverse("authApp:postLogin"), {'password': 'test'}, follow=True)
-        self.assertRedirects(response, '%s%s' % (reverse("authApp:getLogin"),self.login_fail_msg))
-
-    def test_login_fails_with_missing_password(self):
-        response = self.client.post(reverse("authApp:postLogin"), {'username': 'test'}, follow=True)
-        self.assertRedirects(response, '%s%s' % (reverse("authApp:getLogin"),self.login_fail_msg))
-
-    def test_login_fails_with_missing_credentials(self):
-        response = self.client.post(reverse("authApp:postLogin"), {}, follow=True)
-        self.assertRedirects(response, '%s%s' % (reverse("authApp:getLogin"),self.login_fail_msg))
-
-
-class LogoutTest(TestCase):
-
-    def test_url_exists_at_desired_location(self):
-        response = self.client.get('/logout')
-        self.assertEqual(response.status_code, 302)
-
-    def test_url_accessible_by_name(self):
-        response = self.client.get(reverse("authApp:getLogout"))
-        self.assertEqual(response.status_code, 302)
-
-    def test_redirect_to_login(self):
-        response = self.client.get(reverse("authApp:getLogout"))
-        self.assertEqual(response.status_code, 302)
+    def test_view_campaigns_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse("campaignApp:getAllCampaigns"))
         self.assertRedirects(response, reverse("authApp:getLogin"))
 
-    def test_logout_succesfull(self):
-        response = self.client.get(reverse("authApp:getLogout"))
-        self.assertNotIn('_auth_user_id', self.client.session)
+    def test_view_campaigns_return_correct_data(self):
+        login = self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+        response = self.client.get(reverse("campaignApp:getAllCampaigns"))
 
-
-class RegisterTest(TestCase):
-
-    def setUp(self):
-        # Create a user to check for failure scenario
-        test_user = User.objects.create_user(username='test@test.com', password='1X<ISRUkw+tuK')
-        test_user.save()
-
-        # register post endpoint shared among all test cases
-        self.register_endpoint = reverse("authApp:postRegister")
-
-    def test_register_success(self):
-        # actual
-        kwargs = {
-                  'username': 'test@gmail.com',
-                  'password': 'test1Pa$$worD',
-                  'firstname':'testfname',
-                  'lastname': 'testlname',
-        }
-        response = self.client.post(self.register_endpoint, kwargs ,follow=True)
-
-        # expected
-        success_query_kwargs = {"Reg-Msg":"Successful"}
-        success_url = reverse_with_query("index", success_query_kwargs)
-
-        # assert and compare
-        self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, success_url)
-
-    def test_register_fails_on_existing_username(self):
-        kwargs = {
-                  'username': 'test@test.com',
-                  'password': 'test1Pa$$worD',
-                  'firstname':'testfname',
-                  'lastname': 'testlname',
-        }
-        response = self.client.post(self.register_endpoint, kwargs ,follow=True)
-
-        # expected:
-        error_query_kwargs = {"Reg-Msg":"Error-Username-Exists"}
-        success_url = reverse_with_query("authApp:getRegister",error_query_kwargs)
-
-        # assert the application don't breaks
+        campaigns = response.context['campaigns']
+        self.assertEqual(len(campaigns), 2)
+        self.assertEqual(campaigns[0].title, self.campaigns[0].title)
+        self.assertEqual(campaigns[0].idea, self.campaigns[0].idea)
+        self.assertEqual(campaigns[0].is_active, self.campaigns[0].is_active)
+        self.assertEqual(campaigns[0].description, self.campaigns[0].description)
+        self.assertEqual(campaigns[0].campaign_target_sum, self.campaigns[0].campaign_target_sum)
+        self.assertEqual(campaigns[0].campaign_collected_sum, self.campaigns[0].campaign_collected_sum)
+        
+    # Campaign
+    def test_view_campaign_url_accessible_by_name(self):
+        login = self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+        response = self.client.get(reverse("campaignApp:getCampaignById", 
+                                            kwargs={'id':self.campaigns[0].id}))
         self.assertEqual(response.status_code, 200)
 
-        # assert the redirect response
-        self.assertRedirects(response, success_url)
+    def test_view_campaign_url_uses_correct_template(self):
+        login = self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+        response = self.client.get(reverse("campaignApp:getCampaignById", 
+                                            kwargs={'id':self.campaigns[0].id}))
+        self.assertTemplateUsed(response, 'campaign/view-campaign.html')  
 
-    def test_register_fails_on_empty_fields(self):
+    def test_view_campaign_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse("campaignApp:getCampaignById", 
+                                            kwargs={'id':self.campaigns[0].id}))
+        self.assertRedirects(response, reverse("authApp:getLogin"))
 
-        kwargs = {
-                  'username': 'test@test.com',
-                  'password': '',
-                  'firstname':'',
-                  'lastname': 'testlname',
-        }
-        response = self.client.post(self.register_endpoint, kwargs ,follow=True)
+    def test_view_campaign_return_correct_data(self):
+        login = self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+        response = self.client.get(reverse("campaignApp:getCampaignById", 
+                                            kwargs={'id':self.campaigns[0].id}))
 
-        # expected:
-        error_query_kwargs = {"Reg-Msg":"Incomplete-Data"}
-        success_url = reverse_with_query("authApp:getRegister",error_query_kwargs)
+        campaigns = response.context['campaign']
+        self.assertEqual(len(campaigns), 2)
+        self.assertEqual(campaigns.title, self.campaigns[0].title)
+        self.assertEqual(campaigns.idea, self.campaigns[0].idea)
+        self.assertEqual(campaigns.is_active, self.campaigns[0].is_active)
+        self.assertEqual(campaigns.description, self.campaigns[0].description)
+        self.assertEqual(campaigns.campaign_target_sum, self.campaigns[0].campaign_target_sum)
+        self.assertEqual(campaigns.campaign_collected_sum, self.campaigns[0].campaign_collected_sum)
+        
+    def test_view_campaign_invalid_campaign(self):
+        login = self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+        response = self.client.get(reverse("campaignApp:getCampaignById", 
+                                            kwargs={'id':20}))
 
-        # assert the application don't breaks
-        self.assertEqual(response.status_code, 200)
-
-        # assert the redirect response
-        self.assertRedirects(response, success_url)
-
+        self.assertEqual(response.status_code, 404)

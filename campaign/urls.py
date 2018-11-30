@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from campaign import views
+from . import views
 
 urlpatterns = [
-    url(r'^add-campaign$', views.postCampaign, name="postCampaign")
+    url(r'^add-campaign$', views.postCampaign, name="postCampaign"),
+    url(r'^campaigns$', views.getAllCampaigns, name="getAllCampaigns"),
+    url(r'^campaigns/(?P<id>\d+)/$', views.getCampaignById, name="getCampaignById"),
 ]
