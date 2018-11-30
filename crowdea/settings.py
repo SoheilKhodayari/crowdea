@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'idea',
+    'campaign',
+    'bootstrap3'
 ]
 
 MIDDLEWARE = [
