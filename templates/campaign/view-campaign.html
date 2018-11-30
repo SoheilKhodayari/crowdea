@@ -1,6 +1,5 @@
 {% extends "../layouts/main_layout.html" %}
 {% load staticfiles %}
-
 {% block stylesheet %}
 <!-- Website Font style -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
@@ -9,7 +8,9 @@
 {% endblock %}
 
 {% block content %}
-
+{% for message in messages %}
+    <div id="success-alert" class="alert alert-{{ message.tags }} fade-in alert-dismissible text-center">{{ message }}</div>
+{% endfor %}
 	<div class="container my-5">
         <div class="card">
           	<div class="card-body">
@@ -64,5 +65,9 @@
 {% endblock %}
 
 {% block js %}
-
+<script type="text/javascript">
+	$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+		$("#success-alert").slideUp(500);
+	});
+</script>
 {% endblock %}

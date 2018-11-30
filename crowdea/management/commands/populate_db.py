@@ -139,6 +139,5 @@ class Command(BaseCommand):
                 idea=ideas[info['idea']],
                 description=info['description'],
                 c_target=info['campaign_target_sum'],
-                collected=info['campaign_collected_sum'],
                 c_deadline=datetime.strptime(info['meta_campaign_deadline'], '%d/%m/%Y'))
             campaign.save()

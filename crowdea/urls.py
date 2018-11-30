@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^index$', views.index, name='index'),
     url(r'^$', views.getLandingIndex, name='getLandingIndex'),
     url(r'', include('authentication.urls', namespace='authApp')),
-    url(r'', include('idea.urls', namespace='ideaApp')),
-    url(r'', include('campaign.urls', namespace='campaignApp'))
+    url(r'', include('campaign.urls', namespace='campaignApp')),
+    url(r'', include('idea.urls', namespace='ideaApp'))
 ]
