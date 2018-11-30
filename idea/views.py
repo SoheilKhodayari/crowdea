@@ -23,11 +23,9 @@ def getAddIdeaOnSuccessRedirectUrl():
 
 @require_POST
 def postAddIdea(request):
-
     title = request.POST.get("idea-title", "")
     idea_text = request.POST.get("idea-text", "")
     is_active = request.POST.get("is-active", "")
-
 
     if title == "" or idea_text == "":
     	kwargs = {"Msg": "Error-Invalid-Data"}
@@ -78,7 +76,3 @@ def getIdeaById(request, ideaId):
 		return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
 	idea = Idea.objects.get(id = ideaId)
 	return render(request, "idea/view-idea.html", {'idea': idea})
-
-
-
-

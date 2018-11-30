@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.contrib.auth.models import User
 from crowdea.utility import reverse_with_query
 from .views import getAddIdeaOnSuccessRedirectUrl
+from .models import Idea
 
 # # Create your tests here.
 class IdeaTest(TestCase):
@@ -61,16 +62,16 @@ class IdeaTest(TestCase):
     def test_view_idea_success(self):
         # adding idea first:
         add_idea_endpoint = reverse("ideaApp:postAddIdea")
-        self.client.post(add_idea_endpoint,
-                         {'idea-title': 'testIdea', 'idea-text': 'idea content', 'user': self.test_user,
-                          'is_active': 'on'}, follow=True)
-        # TODO: problem here. how can I get the id of a freshly generated idea?
-        #   --->> ANSWER: you need to create a fake idea (say ideaInstance) in setUp method, then id = ideaInstance.pk
+        ideaInstance = Idea.objects.create(title="title", idea="idea",
+                                           is_active=True, user=self.test_user)
+        ideaInstance.save()
         # viewing idea now:
-        # TODO: problem here. please, help with getting the endpoint. these attempts didn't work
-        #view_idea_endpoint = reverse("ideaApp:getIdeaById", id=1)
-        # ---->> ANSWER: the way you pass it should be like below: remember that the slug name "ideaId" is defined in urls.py 
-        view_idea_endpoint = reverse("ideaApp:getIdeaById", kwargs={'ideaId':1})
-        #response = self.client.get(view_idea_endpoint)
+        view_idea_endpoint = reverse("ideaApp:getIdeaById", kwargs={'ideaId':ideaInstance.pk})
+        response = self.client.get(view_idea_endpoint)
         # checking http status
-        #self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
+        idea_db = response.context['idea']
+        self.assertEqual(idea_db.title, 'title')
+        self.assertEqual(idea_db.idea, 'idea')
+        self.assertEqual(idea_db.user, self.test_user)
+        self.assertEqual(idea_db.is_active, True)
