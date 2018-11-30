@@ -18,7 +18,7 @@ def getAddIdea(request):
 
 def getAddIdeaOnSuccessRedirectUrl():
 	kwargs = {"Msg": "Created-Successfully"}
-	url_return_on_success = reverse_with_query("ideaApp:getAddIdea", kwargs)
+	url_return_on_success = reverse_with_query("ideaApp:getAllIdeas", kwargs)
 	return url_return_on_success
 
 @require_POST
