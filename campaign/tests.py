@@ -149,7 +149,6 @@ class CampaignTest(TestCase):
                                             kwargs={'id':self.campaigns[0].id}))
 
         campaigns = response.context['campaign']
-        self.assertEqual(len(campaigns), 1)
         self.assertEqual(campaigns.title, self.campaigns[0].title)
         self.assertEqual(campaigns.idea, self.campaigns[0].idea)
         self.assertEqual(campaigns.is_active, self.campaigns[0].is_active)
