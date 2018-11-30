@@ -24,18 +24,33 @@
               <div style="margin-bottom: 14px;">{{ idea.idea }}</div>
               <table>
                   <tr>
-                    <td style="padding-right: 152px; color: darkblue;">Active:</td>
+                  <td style="padding-right: 152px; color: darkblue;">Active:</td>
                     <td>{{ idea.is_active }}</td>
-                  </tr>
-                  <tr>
-                    <td style="color: darkblue;">Date created:</td>
-                    <td>{{ idea.meta_created_at }}</td>
-                  </tr>
-                  <tr>
-                    <td style="color: darkblue;">Last updated:</td>
-                    <td>{{ idea.meta_last_updated_at }}</td>
-                  </tr>
-              </table>
+              </tr>
+              <tr>
+                <td style="color: darkblue;">Date created:</td>
+                <td>{{ idea.meta_created_at }}</td>
+              </tr>
+              <tr>
+                <td style="color: darkblue;">Last updated:</td>
+                <td>{{ idea.meta_last_updated_at }}</td>
+              </tr>
+            </table>
+              {% if ownsIdea %}
+              <div style="margin-top: 15px;">
+                {% if campaignId == -1 %}
+                  <a class="btn btn-light btn-primary btn-block"
+                    href="{% url 'campaignApp:postCampaign' %}?idea={{ idea.id }}">
+                    Kickstart Campaign
+                  </a>
+                {% else %}
+                  <a class="btn btn-light btn-primary btn-block"
+                    href="{% url 'campaignApp:getCampaignById' campaignId %}">
+                    View Campaign
+                  </a>
+                {% endif %}
+              </div>
+              {% endif %}
           </div>
         </div>
       </div>

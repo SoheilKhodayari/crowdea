@@ -1,0 +1,17 @@
+body {
+
+  background-image: url("../../assets/auth_background.jpg"); 
+  background-repeat: repeat-y;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+.after-bordered:after {
+  content: "";
+  display: block;
+  border-bottom: 1px solid #ccc;
+  margin: 0 15px;
+}

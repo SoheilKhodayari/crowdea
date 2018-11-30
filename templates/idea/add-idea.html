@@ -12,7 +12,9 @@
 {% endblock %}
 
 {% block content %}
-
+{% for message in messages %}
+    <div id="success-alert" class="alert alert-{{ message.tags }} fade-in alert-dismissible text-center">{{ message }}</div>
+{% endfor %}
   <div class="container div-main-content">
     <div class="row">
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -71,5 +73,8 @@
 
 {% block js %}
 <script type="text/javascript">
+  $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+		$("#success-alert").slideUp(500);
+	});
 </script>
 {% endblock %}
