@@ -148,8 +148,8 @@ class CampaignTest(TestCase):
         response = self.client.get(reverse("campaignApp:getCampaignById", 
                                             kwargs={'id':self.campaigns[0].id}))
 
-        campaigns = response.context['campaigns']
-        self.assertEqual(len(campaigns), 2)
+        campaigns = response.context['campaign']
+        self.assertEqual(len(campaigns), 1)
         self.assertEqual(campaigns.title, self.campaigns[0].title)
         self.assertEqual(campaigns.idea, self.campaigns[0].idea)
         self.assertEqual(campaigns.is_active, self.campaigns[0].is_active)
