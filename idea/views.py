@@ -7,7 +7,10 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.decorators.http import require_POST, require_GET
 from crowdea.utility import reverse_with_query
 from .models import Idea
+from campaign.models import Campaign
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 import json
 
 @require_GET
@@ -23,11 +26,9 @@ def getAddIdeaOnSuccessRedirectUrl():
 
 @require_POST
 def postAddIdea(request):
-
     title = request.POST.get("idea-title", "")
     idea_text = request.POST.get("idea-text", "")
     is_active = request.POST.get("is-active", "")
-
 
     if title == "" or idea_text == "":
     	kwargs = {"Msg": "Error-Invalid-Data"}
@@ -42,7 +43,7 @@ def postAddIdea(request):
     	ideaInstance = Idea.objects.create(title=title, idea=idea_text, 
     		is_active=active, user=request.user)
     	ideaInstance.save()
-
+    	messages.success(request, "Idea was successfully added!")
     	return_url = getAddIdeaOnSuccessRedirectUrl()
     	return HttpResponseRedirect(return_url)
 
@@ -77,8 +78,13 @@ def getIdeaById(request, ideaId):
 	if not request.user.is_authenticated():
 		return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
 	idea = Idea.objects.get(id = ideaId)
-	return render(request, "idea/view-idea.html", {'idea': idea})
+	ownsIdea = False
+	campaignId = -1
 
+	if idea.user.id == request.user.id :
+		ownsIdea = True
+		campaign = Campaign.objects.filter(user=request.user,idea_ref=idea)	
+		if campaign.count() > 0:
+			campaignId = campaign[0].id
 
-
-
+	return render(request, "idea/view-idea.html", {'idea': idea,'ownsIdea': ownsIdea, 'campaignId': campaignId})

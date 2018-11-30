@@ -1,0 +1,73 @@
+{% extends "../layouts/main_layout.html" %}
+{% load staticfiles %}
+{% block stylesheet %}
+<!-- Website Font style -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="{% static 'css/campaign/campaign.css' %}"/>
+{% endblock %}
+
+{% block content %}
+{% for message in messages %}
+    <div id="success-alert" class="alert alert-{{ message.tags }} fade-in alert-dismissible text-center">{{ message }}</div>
+{% endfor %}
+	<div class="container my-5">
+        <div class="card">
+          	<div class="card-body">
+          		<div class="container">
+	            	<div class="row mb-3">
+			    		<div class="col nopadding">
+			    			<h5 class="card-title">{{ campaign.title }}</h5>
+			    			<h6 class="card-subtitle mb-2 text-muted">
+								End date: {{ campaign.meta_campaign_deadline|date:"d M Y" }}
+							</h6>
+			    		</div>
+			    		<div class="col">
+			    			<div class="text-right">
+			    				<button class="btn btn-primary">Contribute</button>
+							</div>
+			    		</div>
+		    		</div>
+		    		<div class="progress" style="height: 20px;">
+		    			{% widthratio campaign.campaign_collected_sum campaign.campaign_target_sum 100 as ratio %}
+						  <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{ratio}}%" aria-valuenow="{{ratio}}" aria-valuemin="0" aria-valuemax="100"></div>
+						</div>
+		    		<div class="row mb-4">
+		    			<div class="col nopadding">
+		    				<strong><p class="card-text">Start</p></strong>
+		    			</div>
+		    			<div class="col text-right">
+		    				<strong><p class="card-text"> Goal: {{ campaign.campaign_target_sum }} </p></strong>
+		    			</div>
+		    		</div>
+		    		<hr/>
+		    		<div class="row">
+		    			<h5 class="card-title">Description</h5>
+		    			<p class="card-text">{{ campaign.description }} </p>
+		    		</div>
+		    		<hr/>
+		    		<div class="row">
+		    			<div class="col nopadding">
+		    				<h5 class="card-title">Core Idea</h5>
+		    			</div>
+		    			<div class="col text-right">
+		    				<a href="{% url 'ideaApp:getIdeaById' campaign.idea_ref.id %}" class="card-link">
+	                			View Idea
+	                		</a>
+		    			</div>
+		    			<p class="card-text">{{ campaign.idea }} </p>
+		    		</div>
+		    	</div>
+          	</div>
+        </div>
+	</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+	$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+		$("#success-alert").slideUp(500);
+	});
+</script>
+{% endblock %}

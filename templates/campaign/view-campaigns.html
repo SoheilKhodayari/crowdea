@@ -1,0 +1,57 @@
+{% extends "../layouts/main_layout.html" %}
+{% load staticfiles %}
+
+{% block stylesheet %}
+<!-- Website Font style -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+ 
+<link rel="stylesheet" href="{% static 'css/campaign/campaigns.css' %}"> 
+{% endblock %}
+
+{% block headerextra %}
+{% endblock %}
+
+{% block content %}
+	<div class="container pb-5 div-main-content">
+		<div class="row my-4 justify-content-center">
+			<h1 class="title">Kick-start campaigns</h1>
+		</div>
+	    {% for x in campaigns %}
+	    <div class="row mb-3">
+	        <div class="col">
+	            <div class="card">
+	                <div class="card-body">
+	                	<div class="row">
+	                		<div class="col">
+	                			<h5 class="card-title">{{ x.title }}</h5>
+	                			<h6 class="card-subtitle mb-2 text-muted">
+	            					End date: {{ x.meta_campaign_deadline|date:"d M Y" }}
+	            				</h6>
+	                		</div>
+	                		<div class="col">
+	                			<div class="text-right">
+	                				{% widthratio x.campaign_collected_sum x.campaign_target_sum 100 as ratio %}
+	                				<strong><p>Complete: {{ ratio }}%</p></strong>
+								</div>
+	                		</div>
+	                	</div>
+
+	                	<p class="card-text">{{ x.description }}</p>
+	                	<a href="{% url 'ideaApp:getIdeaById' x.idea_ref.id %}" class="card-link">
+	                		View Idea
+	                	</a>
+	  					<a href="{% url 'campaignApp:getCampaignById' x.id %}" class="card-link">
+	  						More Details
+	  					</a>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    {% endfor %}
+	</div>
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

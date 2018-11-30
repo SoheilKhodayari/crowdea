@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'authentication',
     'idea',
     'campaign',
-    'bootstrap3'
+    'bootstrap3',
+    'crowdea'
 ]
 
 MIDDLEWARE = [
