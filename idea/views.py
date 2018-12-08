@@ -95,15 +95,19 @@ def postRankIdea(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
 
-    rank = int(request.POST.get("rank", 0))
-    idea_id = int(request.POST.get("idea_id", None))
+    try:
+        rank = int(request.POST.get("rank", 0))
+        idea_id = int(request.POST.get("idea_id", None))
+    except:
+        return HttpResponseForbidden('<h1>403: Forbidden</h1>')
     
     if idea_id is None or rank not in set([-1, 1]):
         return HttpResponseForbidden('<h1>403: Forbidden</h1>')
     
     user = request.user
-    idea = Idea.objects.get(id = idea_id)
-    if idea is None:
+    try:
+        idea = Idea.objects.get(id = idea_id)
+    except:
         return HttpResponseForbidden('<h1>403: Forbidden</h1>')
 
     rank_instance = IdeaRank.objects.filter(user=user, idea=idea)
