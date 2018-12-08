@@ -176,7 +176,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <input value="Contribute" class="subscribe btn btn-success btn-block" type="submit"/>
+                                <input id="submit" value="Contribute" class="subscribe btn btn-success btn-block" type="submit"/>
                             </div>
                         </div>
                         <div class="row" style="display:none;">
@@ -310,6 +310,16 @@
 				feedback.addClass("invalid-feedback");
 				feedback.removeClass("valid-feedback");
 				feedback.text("Date format must be: MM/YY");			
+			}
+		});
+
+		$("#submit").on("click", (e)=>{
+			if(!window.popup_result){
+				e.preventDefault();
+				window.popup_result = window.confirm("Are you sure about your payment?");
+				if(window.popup_result){
+					$("#submit").click();
+				}
 			}
 		});
 
