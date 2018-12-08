@@ -88,3 +88,6 @@ def getIdeaById(request, ideaId):
 			campaignId = campaign[0].id
 
 	return render(request, "idea/view-idea.html", {'idea': idea,'ownsIdea': ownsIdea, 'campaignId': campaignId})
+
+
+
