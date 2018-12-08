@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^$', views.getLandingIndex, name='getLandingIndex'),
     url(r'', include('authentication.urls', namespace='authApp')),
     url(r'', include('campaign.urls', namespace='campaignApp')),
-    url(r'', include('idea.urls', namespace='ideaApp'))
+    url(r'', include('idea.urls', namespace='ideaApp')),
+    url(r'', include('comment.urls', namespace='commentApp'))
 ]

@@ -21,7 +21,7 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">Kickstart Campaign</h5>
-             <form action="{% url 'campaignApp:postCampaign' %}"" method="post"><input type='hidden'/> 
+             <form action="{% url 'campaignApp:postCampaign' %}" method="post"><input type='hidden'/>
              {%csrf_token %} 
   
                 {% bootstrap_form form %} 

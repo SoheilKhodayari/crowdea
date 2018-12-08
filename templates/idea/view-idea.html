@@ -51,6 +51,42 @@
                 {% endif %}
               </div>
               {% endif %}
+              <button class="btn btn-success btn-block" style="margin-top: 4px;" data-toggle="modal"
+                      data-target="#addComment">
+                    Add Your Comment
+              </button>
+              <button class="btn btn-info btn-block" style="margin-top: 4px;" data-toggle="modal"
+                      data-target="#viewComments">
+                    View Comments
+              </button>
+              <div class="modal fade" id="addComment" role="dialog">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h4 class="modal-title">Add Your Comment</h4>
+                          </div>
+
+                          <div class="modal-body">
+                              <form id="commentForm" method="post" action="{% url 'commentApp:postComment' %}">
+                                  <!--<input maxlength="500" rows="5" type="text" id="commentText" name="comment-rext" class="form-control"
+                                         placeholder="Share your opinion and knowledge here!" required>-->
+                                  <textarea id="commentText" maxlength="500" style="width: 100%;" name="commentText" rows="8"></textarea>
+                              </form>
+                              <form id="myform" method="get" action="{% url 'commentApp:postComment' %}">
+    <input type="text" name="name" />
+</form>
+
+<input type="submit" form="myform" />
+                          </div>
+                          <div class="modal-footer">
+                              <button id="saveComment" form="commentForm" type="submit" disabled class="btn btn-success" data-dismiss="modal">Save</button>
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+
           </div>
         </div>
       </div>
@@ -61,6 +97,7 @@
 {% endblock %}
 
 {% block js %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
 
@@ -71,6 +108,24 @@
     else{
     	console.log('No');
     }
+
+    $('#commentText').keyup(function() {
+        var empty = false;
+        if ($(this).val().length < 2) {
+            empty = true;
+        }
+        if (empty) {
+            console.log("EMPTY!");
+            $('#saveComment').attr('disabled', 'disabled');
+        } else {
+            console.log("NON EMPTY!");
+            $('#saveComment').removeAttr('disabled');
+        }
+    });
   });
+
+  /*$( "#saveComment" ).click(function() {
+
+  });*/
 </script>
 {% endblock %}

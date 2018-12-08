@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'idea',
     'campaign',
     'bootstrap3',
-    'crowdea'
+    'crowdea',
+    'comment'
 ]
 
 MIDDLEWARE = [
