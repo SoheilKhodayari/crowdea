@@ -23,7 +23,8 @@ ideas_info = [
      'pulvinar tempus efficitur, sapien ci placerat'\
      'enim, it amet fringilla risus risus et lectus.',
      'meta_created_at': '05/08/2018',
-     'meta_last_updated_at': '11/10/2018'},
+     'meta_last_updated_at': '11/10/2018',
+     'rating' : 134},
     {'title': 'The perfect ecommerce website', 
      'is_active':True, 'user':0,
      'idea': 'Lorem ipsum dolor sit amet, consectetur' \
@@ -33,7 +34,8 @@ ideas_info = [
      'tristique sed tellus. Integer elementum pharetra ' \
      'odio eu vestibulum. Aenean et neque et mi aliquet ',
      'meta_created_at': '05/10/2018',
-     'meta_last_updated_at': '25/11/2018'},
+     'meta_last_updated_at': '25/11/2018',
+     'rating' : -34},
     {'title': 'Community helping platform',
      'is_active':True, 'user':1,
      'idea': 'Lorem ipsum dolor sit amet, consectetur' \
@@ -43,7 +45,8 @@ ideas_info = [
      'tristique sed tellus. Integer elementum pharetra ' \
      'odio eu vestibulum. Aenean et neque et mi aliquet ',
      'meta_created_at': '17/09/2018',
-     'meta_last_updated_at': '18/09/2018'},
+     'meta_last_updated_at': '18/09/2018',
+     'rating' : 0},
     {'title': 'Personal assistant', 
      'is_active':True, 'user':2,
      'idea': 'Lorem ipsum dolor sit amet, consectetur' \
@@ -53,7 +56,8 @@ ideas_info = [
      'tristique sed tellus. Integer elementum pharetra ' \
      'odio eu vestibulum. Aenean et neque et mi aliquet ',
      'meta_created_at': '20/02/2017',
-     'meta_last_updated_at': '14/04/2017'},
+     'meta_last_updated_at': '14/04/2017',
+     'rating' : 348},
     {'title': 'Football club management app', 
      'is_active':True, 'user':2,
      'idea': 'Lorem ipsum dolor sit amet, consectetur' \
@@ -63,7 +67,8 @@ ideas_info = [
      'tristique sed tellus. Integer elementum pharetra ' \
      'odio eu vestibulum. Aenean et neque et mi aliquet ',
      'meta_created_at': '20/07/2017',
-     'meta_last_updated_at': '14/11/2018'}]
+     'meta_last_updated_at': '14/11/2018',
+     'rating' : -165}]
 
 ideas = [] # Filled by the script
 
@@ -128,7 +133,8 @@ class Command(BaseCommand):
                 is_active=info['is_active'], 
                 user=users[info['user']],
                 meta_created_at=datetime.strptime(info['meta_created_at'], '%d/%m/%Y'),
-                meta_last_updated_at=datetime.strptime(info['meta_last_updated_at'], '%d/%m/%Y'))
+                meta_last_updated_at=datetime.strptime(info['meta_last_updated_at'], '%d/%m/%Y'),
+                rating=info['rating'])
             idea.save()
             ideas.append(idea)
 
@@ -139,5 +145,6 @@ class Command(BaseCommand):
                 idea=ideas[info['idea']],
                 description=info['description'],
                 c_target=info['campaign_target_sum'],
-                c_deadline=datetime.strptime(info['meta_campaign_deadline'], '%d/%m/%Y'))
+                c_deadline=datetime.strptime(info['meta_campaign_deadline'], '%d/%m/%Y'),
+                campaign_collected_sum=info['campaign_collected_sum'])
             campaign.save()
