@@ -18,6 +18,7 @@ class PostForm(ModelForm):
     title = forms.CharField(widget=forms.HiddenInput())
     idea = forms.CharField(widget=forms.HiddenInput())
     is_active = forms.BooleanField(widget=forms.HiddenInput(), required=False)
+    is_active = forms.BooleanField(widget=forms.HiddenInput(), required=False, initial=True)
     campaign_collected_sum = forms.IntegerField(widget=forms.HiddenInput())
 
     meta_campaign_deadline = forms.DateTimeField(label='Campaign deadline',widget=forms.SelectDateWidget(), 
