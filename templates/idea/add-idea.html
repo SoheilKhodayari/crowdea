@@ -12,9 +12,6 @@
 {% endblock %}
 
 {% block content %}
-{% for message in messages %}
-    <div id="success-alert" class="alert alert-{{ message.tags }} fade-in alert-dismissible text-center">{{ message }}</div>
-{% endfor %}
   <div class="container div-main-content">
     <div class="row">
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -59,7 +56,7 @@
                 <a href="#"> <span class="glyphicon glyphicon-circle-arrow-left">
                 </span> Back to idea list</a></button>-->
                   <a href="{% url 'ideaApp:getAllIdeas' %}" class="btn btn-xs btn-success" style="margin-top: 10px;">
-                        <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to idea list
+                        <span class=""></span> Back to idea list
                   </a>
               </div>
             </form>

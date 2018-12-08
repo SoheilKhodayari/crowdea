@@ -13,7 +13,9 @@
 {% endblock %}
 
 {% block content %}
-
+{% for message in messages %}
+    <div id="success-alert" class="alert alert-{{ message.tags }} fade-in alert-dismissible text-center">{{ message }}</div>
+{% endfor %}
     <div class="container div-main-content">
         {% for idea in ideas %}
             {% if forloop.counter0|divisibleby:3 %}
@@ -89,6 +91,10 @@
     }
 
     $(document).ready(function() {
+        $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+            $("#success-alert").slideUp(500);
+        });
+
         var idea_elem_dict= {};
         $(".idea-info").each(function( index ) {
             var id = $(this).attr('value')
@@ -122,4 +128,5 @@
         });
     });
 </script>
+
 {% endblock %}
