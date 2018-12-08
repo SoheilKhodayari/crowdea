@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from idea.models import Idea
 
 class Comment(models.Model):
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     idea = models.ForeignKey(Idea, on_delete=models.CASCADE)
     comment = models.TextField(max_length=500, null=False)

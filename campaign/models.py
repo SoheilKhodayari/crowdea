@@ -24,7 +24,8 @@ class Campaign(models.Model):
         return u'%d' % self.pk
 
     @classmethod
-    def create(cls, user, idea, description, c_target, c_deadline):
+    def create(cls, user, idea, description, c_target, c_deadline, campaign_collected_sum=0):
         return cls(user=user, idea_ref=idea, title=idea.title, \
             idea=idea.idea, is_active=idea.is_active, description=description, \
-            campaign_target_sum=c_target, meta_campaign_deadline=c_deadline )
+            campaign_target_sum=c_target, meta_campaign_deadline=c_deadline, \
+            campaign_collected_sum=campaign_collected_sum)
