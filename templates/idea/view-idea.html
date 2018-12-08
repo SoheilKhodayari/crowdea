@@ -14,6 +14,9 @@
 {% endblock %}
 
 {% block content %}
+{% for message in messages %}
+    <div id="success-alert" class="alert alert-{{ message.tags }} fade-in alert-dismissible text-center">{{ message }}</div>
+{% endfor %}
     <div class="container">
     <div class="row">
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -22,7 +25,7 @@
               <div class="card-title text-center" style="font-weight: normal; margin-bottom: 10px;">{{ idea.title }}</div>
               <div style="margin-bottom: 14px;">{{ idea.idea }}</div>
               <table>
-                  <tr>
+              <tr>
                   <td style="padding-right: 152px; color: darkblue;">Active:</td>
                     <td>{{ idea.is_active }}</td>
               </tr>
@@ -37,6 +40,10 @@
             </table>
               {% if ownsIdea %}
               <div style="margin-top: 15px;">
+                  <a class="btn btn-success btn-block"
+                    href="{% url 'ideaApp:getEditIdea' idea.pk %}">
+                    Edit Idea
+                  </a>
                 {% if campaignId == -1 %}
                   <a class="btn btn-light btn-primary btn-block"
                     href="{% url 'campaignApp:postCampaign' %}?idea={{ idea.id }}">
@@ -80,6 +87,11 @@
 {% endblock %}
 
 {% block js %}
+<script type="text/javascript">
+  $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+    $("#success-alert").slideUp(500);
+  });
+</script>
 <script type="text/javascript">
     function update_rank_buttons(btns_elem, rank){
         var up_btn = $(btns_elem).find(".up-rank")
