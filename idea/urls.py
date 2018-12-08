@@ -25,4 +25,7 @@ urlpatterns = [
     url(r'^get-idea/(?P<ideaId>\d+)/$', views.getIdeaById, name="getIdeaById"),
     url(r'^get-filter-ideas$', views.getFilterIdeas, name="getFilterIdeas"),
     url(r'^get-filtered-ideas(?P<keyword>\w+|)$', views.getFilteredIdeas, name="getFilteredIdeas"),
+    url(r'^rank-idea$', views.postRankIdea, name="postRankIdea"),
+    url(r'^get-idea-ranks-for-user$', views.getAllIdeaRanksForUser, name="getAllIdeaRanksForUser"),
+    url(r'^get-idea-rank-for-user/(?P<idea_id>\d+)/$', views.getIdeaRankForUser, name="getIdeaRankForUser")
 ]

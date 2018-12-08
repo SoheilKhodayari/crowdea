@@ -23,7 +23,7 @@
             {% endif %}
 
                 <div class="col-sm-6 col-md-4 col-lg-4">
-                    <div class="card card-signin my-5">
+                    <div class="card card-signin my-5 idea-info" value="{{ idea.id }}">
                         <div class="card-body">
                             <div>
                                 <h5 class="card-title text-center">{{ idea.title }}</h5>
@@ -35,7 +35,28 @@
                                href="{% url 'ideaApp:getIdeaById' idea.id %}">
                                 View idea</a>
                             </div>
+                        </div>
+                        <div class="card-footer text-muted rating-info" value="100">
+                            <div class="row">
+                                <div class="col">
+                                    Rating: <span class="rating" value="10">{{idea.rating}}</span>
+                                </div>
+                                <div class="col">                                   
+                                    <div class="text-right rank-btns" value="10">
+                                        <a class="rank down-rank" style="color: gray" href ="#">
+                                            <span class="rank-id", value="{{idea.id}}" hidden></span>
+                                            <span class="rank-val", value="-1" hidden></span>
+                                            <span class="fa fa-thumbs-o-down px-1"  aria-hidden="true"></span>
+                                        </a> 
+                                        <a class="rank up-rank" style="color: gray" href="#">
+                                            <span class="rank-id", value="{{idea.id}}" hidden></span>
+                                            <span class="rank-val", value="1" hidden></span>
+                                            <span class="fa fa-thumbs-o-up px-1"  aria-hidden="true"></span>
+                                        </a>
 
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -49,12 +70,63 @@
 {% endblock %}
 
 {% block js %}
+
 <script type="text/javascript">
-  $(document).ready(function(){
-    $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
-        $("#success-alert").slideUp(500);
+    function update_rank_buttons(btns_elem, rank){
+        var up_btn = $(btns_elem).find(".up-rank")
+        var down_btn = $(btns_elem).find(".down-rank")
+
+        if (rank == -1) {
+            up_btn.css("color", "gray")
+            down_btn.css("color", "red")
+        }
+        else if (rank == 1) {
+            up_btn.css("color", "green")
+            down_btn.css("color", "gray")
+        }
+        else {
+            up_btn.css("color", "gray")
+            down_btn.css("color", "gray")
+        }
+    }
+
+    $(document).ready(function() {
+        $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+            $("#success-alert").slideUp(500);
+        });
+
+        var idea_elem_dict= {};
+        $(".idea-info").each(function( index ) {
+            var id = $(this).attr('value')
+            idea_elem_dict[id] = $(this)
+        });
+        $.get(
+            "{% url 'ideaApp:getAllIdeaRanksForUser' %}", 
+            function(data){
+                data.ranks.forEach(function(element) {
+                    idea_id = element.idea_id
+                    rank = element.rank
+                    idea_elem = idea_elem_dict[idea_id]
+                    update_rank_buttons(idea_elem.find(".rank-btns"), rank)
+                });
+            }
+        )
+        $(".rank").click(function(event){
+            event.preventDefault();
+            var id = $(this).find(".rank-id").attr('value');
+            var value = $(this).find(".rank-val").attr('value');
+            var rating_span = $(this).parents(".rating-info").find(".rating")
+            var parent = $(this).parent()
+            $.post(
+                "{% url 'ideaApp:postRankIdea' %}", 
+                {rank: value, idea_id: id},
+                function(data){
+                    rating_span.text(data.rating);
+                    update_rank_buttons(parent, data.rank)
+                }
+            );
+        });
     });
-     });
 </script>
 
 {% endblock %}

@@ -12,5 +12,9 @@ class Idea(models.Model):
     is_active = models.BooleanField(default=True)
     meta_created_at = models.DateTimeField(auto_now_add=True)
     meta_last_updated_at = models.DateTimeField(auto_now=True)
-    
+    rating = models.IntegerField(default=0, blank=False, null=False) 
 
+class IdeaRank(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	idea = models.ForeignKey(Idea, on_delete=models.CASCADE)
+	value = models.IntegerField(default=0, blank=False, null=False) 
