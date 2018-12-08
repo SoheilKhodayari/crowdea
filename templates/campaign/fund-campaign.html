@@ -1,0 +1,320 @@
+{% extends "../layouts/main_layout.html" %}
+{% load staticfiles %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="{% static 'css/campaign/fund-campaign.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container mx-5 my-5 fund">
+    <div class="row">
+        <div class="col-xs-12 col-md-8" style="font-size: 12pt; line-height: 2em;">
+			<div class="container">
+		        <div class="card">
+		          	<div class="card-body">
+		          		<div class="container">
+			            	<div class="row mb-3">
+					    		<div class="col nopadding">
+					    			<h5 class="card-title">{{ campaign.title }}</h5>
+					    			<h6 class="card-subtitle mb-2 text-muted">
+										End date: {{ campaign.meta_campaign_deadline|date:"d M Y" }}
+									</h6>
+					    		</div>
+				    			<div class="col text-right">
+				    				<strong><p class="card-text"> Collected: {{ campaign.campaign_collected_sum }} <span>Euros </span></p> </strong>
+				    			</div>
+				    		</div>
+				    		<div class="progress" style="height: 20px;">
+				    			{% widthratio campaign.campaign_collected_sum campaign.campaign_target_sum 100 as ratio %}
+								  <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{ratio}}%" aria-valuenow="{{ratio}}" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+				    		<div class="row mb-4">
+				    			<div class="col nopadding">
+				    				<strong><p class="card-text">Start</p></strong>
+				    			</div>
+				    			<div class="col text-right">
+				    				<strong><p class="card-text"> Goal: {{ campaign.campaign_target_sum }} <span>Euros </span></p> </strong>
+				    			</div>
+				    		</div>
+				    		<hr/>
+				    		<div class="row">
+				    			<h5 class="card-title">Description</h5>
+				    			<p class="card-text" style="margin-left: 4px">{{ campaign.description }} </p>
+				    		</div>
+				    		<hr/>
+				    		<div class="row">
+				    			<div class="col nopadding">
+				    				<h5 class="card-title">Core Idea</h5>
+				    			</div>
+				    			<div class="col text-right">
+				    				<a href="{% url 'ideaApp:getIdeaById' campaign.idea_ref.id %}" class="card-link">
+			                			View Idea
+			                		</a>
+				    			</div>
+				    			<p class="card-text">{{ campaign.idea }} </p>
+				    		</div>
+				    	</div>
+		          	</div>
+		        </div>
+			</div>
+        </div>
+
+        <div class="col-xs-12 col-md-4">     
+            <!-- CREDIT CARD FORM STARTS HERE -->
+            <div class="panel panel-default credit-card-box">
+                <div class="panel-heading display-table" >
+                    <div class="row display-tr" >
+                        <h3 class="panel-title display-td" >Payment Details</h3>
+                        <div class="display-td" >                            
+                            <img class="img-responsive pull-right" src="{% static 'assets/payment_logo.png' %}">
+                        </div>
+                    </div>                    
+                </div>
+                <div class="panel-body">
+                    <form role="form" id="payment-form" method="POST" action="{% url 'campaignApp:postFundCampaign' campaign.pk %}" class="needs-validation" novalidate>
+
+                    	<div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="funding-scheme">Funding Scheme</label>
+                                    <div class="input-group">
+
+									    <select name="funding-scheme" class="form-control" id="funding-scheme">
+									      <option value="25" selected="selected">25 EUR</option>
+									      <option value="50">50 EUR</option>
+									      <option value="100">100 EUR</option>
+									      <option value="200">200 EUR</option>
+									      <option value="500">500 EUR</option>
+									      <option value="Other">Other</option>
+									    </select>
+                                    </div>
+                                </div>                            
+                            </div>
+                        </div>
+                    	<div class="row hidden-element" id="other-amount-div">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="funding-scheme-other">Other amount:</label>
+                                    <div class="input-group">
+                                        <input 
+                                        	id="other-amount-input"
+                                            type="text"
+                                            class="form-control"
+                                            name="other-amount"
+                                            placeholder="Your amount"
+                                            required 
+                                        />
+                                        <span class="input-group-addon"><i class="fa fa-euro"></i></span>
+                                        <div id="amount-feedback" class=""> </div>
+                                    </div>
+                                </div>                            
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="cardNumber">Card Number</label>
+                                    <div class="input-group">
+                                        <input 
+                                        	id="card-number-id"
+                                            type="tel"
+                                            class="form-control"
+                                            name="card-number"
+                                            placeholder="Valid Card Number"
+                                            autocomplete="cc-number"
+                                            required autofocus 
+                                        />
+                                        <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                        <div id="cardno-feedback" class=""> </div>
+                                    </div>
+                                </div>                            
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-7 col-md-7">
+                                <div class="form-group">
+                                    <label for="cardExpiry"><span class="hidden-xs">Expiration</span><span class="visible-xs-inline">EXP</span> Date</label>
+                                    <input 
+                                    	id="exp-date-id"
+                                        type="tel" 
+                                        class="form-control" 
+                                        name="card-exp"
+                                        placeholder="MM / YY"
+                                        autocomplete="cc-exp"
+                                        required 
+                                    />
+                                    <div id="exp-feedback" class=""> </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-md-5 pull-right">
+                                <div class="form-group">
+                                    <label for="cardCVC">CV Code</label>
+                                    <input 
+                                    	id="cvc-code-id"
+                                        type="tel" 
+                                        class="form-control"
+                                        name="card-cvc"
+                                        placeholder="CVC"
+                                        autocomplete="cc-csc"
+                                        required
+                                    />
+                                    <div id="cvc-feedback" class=""> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="couponCode">Card Holder's Name</label>
+                                    <input id="holder-name-id" type="text" class="form-control" name="card-holder" />
+                                    <div id="holdername-feedback" class=""> </div>
+                                </div>
+                            </div>                        
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input value="Contribute" class="subscribe btn btn-success btn-block" type="submit"/>
+                            </div>
+                        </div>
+                        <div class="row" style="display:none;">
+                            <div class="col-xs-12">
+                                <p class="payment-errors"></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>            
+            <!-- CREDIT CARD FORM ENDS HERE -->
+        </div>            
+        
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		$("#funding-scheme").on('change', (event) => {
+			var optionSelected = $(this).find("option:selected");
+			var valueSelected  = optionSelected.val();
+    		if(valueSelected == "Other"){
+    			$("#other-amount-div").removeClass('hidden-element');
+    		}
+    		else
+    		{
+    			if(!$("#other-amount-div").hasClass('hidden-element')){
+    				$("#other-amount-div").addClass('hidden-element');
+    			}
+    		}
+    		$(event.target).addClass('is-valid');
+		});
+
+		/* Data Validation */
+		$("#other-amount-input").on('change', (event)=>{
+			var amount = event.target.value;
+			var current = $("#other-amount-input");
+			var feedback = $("#amount-feedback");
+			console.log(amount);
+			if(isNaN(amount) && amount.length){
+				current.addClass('is-invalid');
+				current.removeClass('is-valid');
+				feedback.addClass("invalid-feedback");
+				feedback.removeClass('valid-feedback');
+				feedback.text('Payment amount must be an number!');
+			}else{
+				if(amount.length>0){
+					current.addClass('is-valid');
+					current.removeClass('is-invalid');
+					feedback.addClass("valid-feedback");
+					feedback.removeClass("invalid-feedback");
+					feedback.text('Looks good!');
+				}else {
+					current.removeClass('is-valid');
+					current.removeClass('is-invalid');
+					feedback.text('');
+				}
+			}
+		});
+
+		$("#card-number-id").on("change", (event) => {
+			var value = event.target.value;
+			var feedback = $("#cardno-feedback");
+			if(value.length==16){
+				$(event.target).addClass('is-valid');
+				$(event.target).removeClass('is-invalid');
+				feedback.addClass("valid-feedback");
+				feedback.removeClass("invalid-feedback");
+				feedback.text("Looks good!");
+			}else{
+				$(event.target).addClass('is-invalid');
+				$(event.target).removeClass('is-valid');
+				feedback.addClass("invalid-feedback");
+				feedback.removeClass("valid-feedback");
+				feedback.text("Card number must be a valid 16-digit number!");
+			}
+		});
+
+		$("#holder-name-id").on("change", (event)=> {
+			var value = event.target.value;
+			var feedback = $("#holdername-feedback");
+			if(isNaN(value)){
+				$(event.target).addClass('is-valid');
+				$(event.target).removeClass('is-invalid');
+				feedback.addClass("valid-feedback");
+				feedback.removeClass("invalid-feedback");
+				feedback.text("Looks good!");
+			}else{
+				$(event.target).addClass('is-invalid');
+				$(event.target).removeClass('is-valid');
+				feedback.addClass("invalid-feedback");
+				feedback.removeClass("valid-feedback");
+				feedback.text("Name must only contain alphabetic characters!");			
+			}
+		});
+
+		$("#cvc-code-id").on("change", (event)=> {
+			var value = event.target.value;
+			var feedback = $("#cvc-feedback");
+			if(!isNaN(value) && value.length>=3 && value.length<= 4){
+				$(event.target).addClass('is-valid');
+				$(event.target).removeClass('is-invalid');
+				feedback.addClass("valid-feedback");
+				feedback.removeClass("invalid-feedback");
+				feedback.text("Looks good!");
+			}else{
+				$(event.target).addClass('is-invalid');
+				$(event.target).removeClass('is-valid');
+				feedback.addClass("invalid-feedback");
+				feedback.removeClass("valid-feedback");
+				feedback.text("CVC must be a 4 or 3-digit number!");			
+			}
+		});
+
+		$("#exp-date-id").on("change", (event)=> {
+			var value = event.target.value;
+			var feedback = $("#exp-feedback");
+			if(value.length==5 && value[2]=="/" && !isNaN(value[0]) && !isNaN(value[1]) && !isNaN(value[3]) && !isNaN(value[4]) ){
+				$(event.target).addClass('is-valid');
+				$(event.target).removeClass('is-invalid');
+				feedback.addClass("valid-feedback");
+				feedback.removeClass("invalid-feedback");
+				feedback.text("Looks good!");
+			}else{
+				$(event.target).addClass('is-invalid');
+				$(event.target).removeClass('is-valid');
+				feedback.addClass("invalid-feedback");
+				feedback.removeClass("valid-feedback");
+				feedback.text("Date format must be: MM/YY");			
+			}
+		});
+
+	});
+</script>
+{% endblock %}
+
+

@@ -24,7 +24,7 @@
 			    		</div>
 			    		<div class="col">
 			    			<div class="text-right">
-			    				<button class="btn btn-primary">Contribute</button>
+			    			<a class="btn btn-primary" href="{% url 'campaignApp:getContributeToCampagin' campaign.pk %}">Contribute</a>
 							</div>
 			    		</div>
 		    		</div>
@@ -36,8 +36,11 @@
 		    			<div class="col nopadding">
 		    				<strong><p class="card-text">Start</p></strong>
 		    			</div>
+		    			<div class="col text-center">
+		    				<p class="card-text"><strong> Collected:</strong> {{ campaign.campaign_collected_sum }} <span>Euros </span></p> 
+				    	</div>
 		    			<div class="col text-right">
-		    				<strong><p class="card-text"> Goal: {{ campaign.campaign_target_sum }} <span>Euros </span></p> </strong>
+		    				<p class="card-text"> <strong>Goal:</strong> {{ campaign.campaign_target_sum }} <span>Euros </span></p> 
 		    			</div>
 		    		</div>
 		    		<hr/>
