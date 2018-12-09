@@ -8,13 +8,26 @@
 <link rel="stylesheet" href="{% static 'css/auth/auth.css' %}">
     <!-- Loading one more time..... -->
     <link rel="stylesheet" href="{% static 'libs/bootstrap/bootstrap.4.1.min.css' %}">
+    <!--TODO: when modal (e.g. add comment) is opened and closed, header menu gets moved to the left a bit-->
+    <!-- This didn't help :((( -->
+    <style>
+        .modal {
+            overflow-y: auto;
+        }
+        .modal-open {
+            overflow: auto;
+        }
+    </style>
 {% endblock %}
 
 {% block headerextra %}
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+{% for message in messages %}
+    <div id="success-alert" class="alert alert-{{ message.tags }} fade-in alert-dismissible text-center">{{ message }}</div>
+{% endfor %}
+    <div class="container" id="main">
     <div class="row">
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card card-signin my-5 idea-info" value="{{ idea.id }}">
@@ -22,7 +35,7 @@
               <div class="card-title text-center" style="font-weight: normal; margin-bottom: 10px;">{{ idea.title }}</div>
               <div style="margin-bottom: 14px;">{{ idea.idea }}</div>
               <table>
-                  <tr>
+              <tr>
                   <td style="padding-right: 152px; color: darkblue;">Active:</td>
                     <td>{{ idea.is_active }}</td>
               </tr>
@@ -36,36 +49,42 @@
               </tr>
             </table>
               {% if ownsIdea %}
-              <div style="margin-top: 15px;">
+              <div class="row" style="margin-top: 18px;">
+                  <a class="btn btn-success pull-left" style="width: 44%; margin-right: 5%; margin-left: 3.5%;"
+                    href="{% url 'ideaApp:getEditIdea' idea.pk %}">
+                    Edit Idea
+                  </a>
                 {% if campaignId == -1 %}
-                  <a class="btn btn-light btn-primary btn-block"
+                  <a class="btn btn-primary pull-right" style="width: 44%; margin-right: 3.5%;"
                     href="{% url 'campaignApp:postCampaign' %}?idea={{ idea.id }}">
                     Kickstart Campaign
                   </a>
                 {% else %}
-                  <a class="btn btn-light btn-primary btn-block"
+                  <a class="btn btn-primary pull-right" style="width: 44%; margin-right: 3.5%;"
                     href="{% url 'campaignApp:getCampaignById' campaignId %}">
                     View Campaign
                   </a>
                 {% endif %}
               </div>
               {% endif %}
-              <button class="btn btn-success btn-block" style="margin-top: 4px;" data-toggle="modal"
+              <!--<button class="btn btn-success btn-block" style="margin-top: 4px;" data-toggle="modal"
                       data-target="#addComment">
                     Add Your Comment
               </button>
-              <button id="viewComments" class="btn btn-info btn-block" style="margin-top: 4px;" data-toggle="modal"
+              <button id="viewCommentsButton" class="btn btn-info btn-block" style="margin-top: 4px;" data-toggle="modal"
                       data-target="#viewComments">
                     View Comments
-              </button>
-              <div class="modal fade" id="addComment" role="dialog">
+              </button>-->
+              <div class="modal fade" id="addCommentModal" role="dialog">
                   <div class="modal-dialog">
                       <div class="modal-content">
                           <div class="modal-header">
-                              <h4 class="modal-title">Add Your Comment</h4>
+                              <h5 class="modal-title">Add Your Comment</h5>
                           </div>
                           <div class="modal-body">
-                              <textarea id="commentText" maxlength="500" style="width: 100%;" name="commentText" rows="8"></textarea>
+                              <p>You have 250 symbols, use them well!</p>
+                              <textarea autofocus id="commentText" maxlength="250" style="width: 100%;"
+                                        name="commentText" rows="4"></textarea>
                           </div>
                           <div class="modal-footer">
                               <button id="saveComment" form="commentForm" type="submit" disabled class="btn btn-success" data-dismiss="modal">Save</button>
@@ -74,39 +93,46 @@
                       </div>
                   </div>
               </div>
-
           </div>
           <div class="card-footer text-muted rating-info" value="100">
-              <div class="row">
+              <div id="rankingRow" class="row">
                   <div class="col">
-                      Rating: <span class="rating" value="10">{{idea.rating}}</span>
+                      <span id="viewCommentsLink" style="color: #6078EA; text-decoration:underline;
+                       cursor:pointer;}">Comments:</span> <span id="commentsCount"> {{ commentsCount }} </span>
                   </div>
-                  <div class="col">                                   
+                  <div class="col">
                       <div class="text-right rank-btns" value="10">
+                          <span>Rating: <span style="margin-right: 10px;" class="rating" value="10">{{idea.rating}}</span></span>
                           <a class="rank down-rank" style="color: gray" href ="#">
                               <span class="rank-val", value="-1" hidden></span>
                               <span class="fa fa-thumbs-o-down px-1"  aria-hidden="true"></span>
                           </a> 
                           <a class="rank up-rank" style="color: gray" href="#">
                               <span class="rank-val", value="1" hidden></span>
-                              <span class="fa fa-thumbs-o-up px-1"  aria-hidden="true"></span>
+                              <span class="fa fa-thumbs-o-up px-1" aria-hidden="true"></span>
                           </a>
-
                       </div>
                   </div>
               </div>
+              <button id="addCommentButton" class="btn btn-info btn-block" style="margin-top: 10px;" data-toggle="modal"
+                      data-target="#addCommentModal">Share Your Thoughts</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-
 {% endblock %}
 
 {% block js %}
+    <!-- had problems without it... -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+  $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+    $("#success-alert").slideUp(500);
+  });
+</script>
+<script type="text/javascript">
+
     function update_rank_buttons(btns_elem, rank){
         var up_btn = $(btns_elem).find(".up-rank")
         var down_btn = $(btns_elem).find(".down-rank")
@@ -126,6 +152,24 @@
     }
 
     $(document).ready(function() {
+        var comments = {};
+        var newCommentsCount = 0;
+
+        <!--TODO: when modal (e.g. add comment) is opened and closed, header menu gets moved to the left a bit-->
+        // This didn't help :(((
+        $('.modal').on('show.bs.modal', function () {
+        if ($(document).height() > $(window).height()) {
+            // no-scroll
+            $('body').addClass("modal-open-noscroll");
+        }
+        else {
+            $('body').removeClass("modal-open-noscroll");
+        }
+        });
+        $('.modal').on('hide.bs.modal', function () {
+            $('body').removeClass("modal-open-noscroll");
+        });
+
         $.get(
             "{% url 'ideaApp:getIdeaRankForUser' idea.id %}", 
             function(data){
@@ -168,20 +212,89 @@
                 {comment: value, idea_id: id },
                 function(data){
                     console.log("success");
+                    $('#commentText').val('');
+                    $('#saveComment').attr('disabled', 'disabled');
+                    $(".probootstrap-header").after('<div id="success-alert" class="alert alert-success fade-in alert-dismissible text-center">' +
+                        'Comment was successfully added!</div>');
+                    $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+                        $("#success-alert").slideUp(500);
+                    });
+                    var count = {{ commentsCount }};
+                    newCommentsCount += 1;
+                    var updatedCount = parseInt(count)+newCommentsCount;
+                    // getting the date
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth()+1; //January is 0!
+                    var yyyy = today.getFullYear();
+                    if(dd<10) {
+                        dd = '0'+dd
+                    }
+                    if(mm<10) {
+                        mm = '0'+mm
+                    }
+                    today = yyyy+'-'+mm+'-'+dd;
+                    $('#commentsCount').text(updatedCount);
+                    if($("#commentsSection").length != 0) {
+                        console.log("WAS HERE!");
+                        // in this case we should add the comment to the view manually
+                        var firstName = "{{ user.first_name }}";
+                        var lastName = "{{ user.last_name }}";
+                        var author = firstName + " " + lastName;
+                        console.log(author);
+                        var html = '<div style="width: 100%;">';
+                            html += '<div class="card card-signin my-1 idea-info" style="padding: 2px;">'
+                                +'<div class="row" style="width: 100%;"><div class="col" style="margin-left: 15px;' +
+                                ' font-size: 14px; font-weight: bold;">'
+                                +author+'</div>' +
+                                '<div class="col" style="text-align: right; font-size: 14px;">'+today+'</div>'
+                                +'</div>'+'<div style="margin-left: 15px; margin-right: 15px; margin-top: 5px; width: 100%-30px; color: black; font-size: 14px;">'
+                                +value+'</div></div>';
+                        html += '</div>';
+                        $("#commentsSection").prepend(html);
+                    } else {
+                        console.log("FFS!");
+                    }
                 }
             );
         });
 
-        $( "#viewComments" ).click(function() {
-            console.log("!!!!!!!!!");
+        $("#viewCommentsLink").click(function() {
             var id = {{ idea.id }};
-            $.get(
+
+            if($("#commentsSection").length == 0) {
+                // if comments haven't been fetched yet - let's do it
+                $.get(
                 "{% url 'commentApp:getCommentsByIdeaId' %}",
                 { idea_id: id },
                 function(data){
-                    console.log(data);
-                }
-            );
+                    comments = data.comments;
+                    console.log(comments.length);
+                    if(comments.length == 0) {
+                            $("#addCommentButton").before('<div style="margin-top:12px; font-size: 12px; color: red;">' +
+                                'No comments so far! Be the first to add with the button below.</div>');
+                    } else{
+                        $("#addCommentButton").before(
+                                '<div id="commentsSection" class="nav nav-pills nav-stacked" style="height: 200px; margin-top: 8px; overflow-y: scroll;"></div>');
+                        var html = '<div style="width: 100%;">';
+                        for (var i = 0; i < comments.length; i++) {
+                            //console.log(comments[i]);
+                            html += '<div class="card card-signin my-1 idea-info" style="padding: 2px;">'
+                                +'<div class="row" style="width: 100%;"><div class="col" style="margin-left: 15px;' +
+                                ' font-size: 14px; font-weight: bold;">'
+                                +comments[i].author+'</div>' +
+                                '<div class="col" style="text-align: right; font-size: 14px;">'+comments[i].meta_created_at.substring(0,10)+'</div>'
+                                +'</div>'+'<div style="margin-left: 15px; margin-right: 15px; margin-top: 5px; width: 100%-30px; color: black; font-size: 14px;">'
+                                +comments[i].comment+'</div></div>';
+                        }
+                        html += '</div>';
+                        $("#commentsSection").append(html);
+                    }
+                });
+            } else {
+                console.log(comments.length);
+                $("#commentsSection").toggle();
+            }
         });
     });
 

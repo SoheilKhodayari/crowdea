@@ -26,7 +26,10 @@ def postComment(request):
         return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
 
     comment = request.POST.get("comment", None)
-    idea_id = int(request.POST.get("idea_id", None))
+    if comment is None or comment == '':
+        return HttpResponseForbidden('<h1>403: Forbidden</h1>')
+
+    idea_id = int(request.POST.get("idea_id", 0))
     user = request.user
     try:
         idea = Idea.objects.get(id=idea_id)
@@ -39,9 +42,12 @@ def postComment(request):
 def getCommentsByIdeaId(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
-    print("meh!")
     idea_id = int(request.GET.get("idea_id", None))
-    print(idea_id)
-    idea = Comment.objects.get(id=idea_id)
-    comments = Comment.objects.get(idea)
-    return JsonResponse({'comments': comments})
+    idea = Idea.objects.get(id=idea_id)
+    comments = Comment.objects.filter(idea=idea).order_by('-meta_created_at').values()
+
+    for comment in comments:
+        user = User.objects.get(id=comment['user_id'])
+        comment['author'] = user.first_name+' '+user.last_name
+
+    return JsonResponse({'comments': list(comments)})

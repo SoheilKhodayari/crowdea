@@ -9,7 +9,6 @@ from .models import Idea, IdeaRank
 from datetime import datetime
 import json
 
-
 # # Create your tests here.
 class IdeaTest(TestCase):
 
@@ -19,7 +18,6 @@ class IdeaTest(TestCase):
         self.test_user.save()
         login = self.client.login(
         username='testuser', password='1X<ISRUkw+tuK')
-        
 
     def test_add_idea_successful(self):
         add_idea_endpoint = reverse("ideaApp:postAddIdea")
@@ -64,7 +62,6 @@ class IdeaTest(TestCase):
 
     def test_view_idea_success(self):
         # adding idea first:
-        add_idea_endpoint = reverse("ideaApp:postAddIdea")
         ideaInstance = Idea.objects.create(title="title", idea="idea",
                                            is_active=True, user=self.test_user)
         ideaInstance.save()

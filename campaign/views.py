@@ -18,6 +18,8 @@ from .models import Campaign
 from django.http import Http404 
 from django.http import HttpResponseNotFound
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 def getOnAddCampaignSuccessUrl(ideaId):
 	kwargs = {"Msg": "Created-Successfully"}
@@ -70,3 +72,35 @@ def getCampaignById(request, id):
 		return HttpResponseNotFound('<h1>404: Campaign not found</h1>')
 
 	return render(request, "campaign/view-campaign.html", {'campaign': campaign})
+
+
+
+
+
+@login_required
+def getContributeToCampagin(request, campaignId):
+	campaign = get_object_or_404(Campaign, pk=campaignId)
+	return render(request, "campaign/fund-campaign.html", {'campaign': campaign})
+
+
+@login_required
+def postFundCampaign(request, campaignId):
+	campaign = get_object_or_404(Campaign, pk=campaignId)
+
+	scheme = request.POST.get("funding-scheme", None)
+	other= request.POST.get("other-amount", None)
+	if scheme == "Other":
+		amount = other
+	else:
+		amount = scheme
+
+	campaign.campaign_collected_sum+= int(amount)
+	campaign.save()
+	messages.success(request, "Payment Successful, Thank you!")
+	return HttpResponseRedirect(reverse_lazy("campaignApp:getCampaignById", kwargs={"id": campaign.pk}))
+
+
+
+
+
+

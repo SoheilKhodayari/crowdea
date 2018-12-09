@@ -8,11 +8,13 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.decorators.http import require_POST, require_GET
 from crowdea.utility import reverse_with_query
 from .models import Idea, IdeaRank
-from campaign.models import Campaign
 from comment.models import Comment
+from campaign.models import Campaign
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 @require_GET
 def getAddIdea(request):
@@ -48,6 +50,30 @@ def postAddIdea(request):
         return_url = getAddIdeaOnSuccessRedirectUrl()
         return HttpResponseRedirect(return_url)
 
+@login_required
+def getEditIdea(request, ideaId):
+    idea = get_object_or_404(Idea, pk=ideaId)
+    return render(request, "idea/edit-idea.html", {"idea": idea})
+
+
+@login_required
+def postEditIdea(request, ideaId):
+    idea = get_object_or_404(Idea, pk=ideaId)
+    text = request.POST.get("idea-text", None)
+    is_active = request.POST.get("is-active", "")
+    if is_active=="on":
+        active = True 
+    else:
+        active = False
+
+    idea.is_active = active
+
+    if text is not None:
+        idea.idea = text
+    idea.save()
+    messages.success(request, "Idea was successfully edited!")
+    return HttpResponseRedirect(reverse_lazy("ideaApp:getIdeaById", kwargs={"ideaId":ideaId}))
+
 def getFilterIdeas(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
@@ -79,7 +105,7 @@ def getIdeaById(request, ideaId):
 	if not request.user.is_authenticated():
 		return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
 	idea = Idea.objects.get(id = ideaId)
-	comments = Comment.objects.filter(idea=idea).order_by('-meta_created_at')
+	commentsCount = Comment.objects.filter(idea=idea).count()
 	ownsIdea = False
 	campaignId = -1
 
@@ -89,7 +115,8 @@ def getIdeaById(request, ideaId):
 		if campaign.count() > 0:
 			campaignId = campaign[0].id
 
-	return render(request, "idea/view-idea.html", {'idea': idea,'ownsIdea': ownsIdea, 'campaignId': campaignId})
+	return render(request, "idea/view-idea.html", {'idea': idea, 'commentsCount': commentsCount,
+                                                   'ownsIdea': ownsIdea, 'campaignId': campaignId})
 
 @require_POST
 def postRankIdea(request):

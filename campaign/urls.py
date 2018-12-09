@@ -21,4 +21,9 @@ urlpatterns = [
     url(r'^add-campaign$', views.postCampaign, name="postCampaign"),
     url(r'^campaigns$', views.getAllCampaigns, name="getAllCampaigns"),
     url(r'^campaigns/(?P<id>\d+)/$', views.getCampaignById, name="getCampaignById"),
+    url(r'^get-fund-campaign/(?P<campaignId>\d+)/$', views.getContributeToCampagin, name="getContributeToCampagin"),
+     url(r'^fund-campaign/(?P<campaignId>\d+)/$', views.postFundCampaign, name="postFundCampaign"),
 ]
+
+
+
