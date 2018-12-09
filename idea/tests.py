@@ -26,6 +26,7 @@ class IdeaTest(TestCase):
                                     follow=True)
         self.assertEqual(response.status_code, 200)
         success_url = getAddIdeaOnSuccessRedirectUrl()
+        print ("URL: "+success_url)
         self.assertRedirects(response, success_url)
 
     def test_add_idea_failure(self):
@@ -57,6 +58,25 @@ class IdeaTest(TestCase):
         self.assertEqual(ideas_list.__len__(), 2)
         self.assertEqual(ideas_list[0].title, 'testIdea2')
         self.assertEqual(ideas_list[0].idea, 'idea content 2')
+        self.assertEqual(ideas_list[0].user, self.test_user)
+        self.assertEqual(ideas_list[0].is_active, False)
+
+    def test_view_own_ideas_success(self):
+        # adding 2 ideas first:
+        add_idea_endpoint = reverse("ideaApp:postAddIdea")
+        idea1 = {'idea-title': 'testIdea1', 'idea-text': 'idea content 1', 'user': self.test_user,
+                          'is_active': 'on'}
+        self.client.post(add_idea_endpoint, idea1, follow=True)
+        # now getting ideas:
+        view_ideas_endpoint = reverse("ideaApp:getAllIdeas")
+        response = self.client.get(view_ideas_endpoint)
+        # checking http status:
+        self.assertEqual(response.status_code, 200)
+        # checking list size and contents. newest idea should come first:
+        ideas_list = response.context['ideas']
+        self.assertEqual(ideas_list.__len__(), 1)
+        self.assertEqual(ideas_list[0].title, 'testIdea1')
+        self.assertEqual(ideas_list[0].idea, 'idea content 1')
         self.assertEqual(ideas_list[0].user, self.test_user)
         self.assertEqual(ideas_list[0].is_active, False)
 

@@ -55,7 +55,6 @@ def getEditIdea(request, ideaId):
     idea = get_object_or_404(Idea, pk=ideaId)
     return render(request, "idea/edit-idea.html", {"idea": idea})
 
-
 @login_required
 def postEditIdea(request, ideaId):
     idea = get_object_or_404(Idea, pk=ideaId)
@@ -92,7 +91,7 @@ def getFilteredIdeas(request, keyword):
         ideas = Idea.objects.all().order_by('-meta_created_at')
     print(ideas.__len__())
     # temporary thing, later json will be returned:
-    return render(request, "idea/filter-ideas.html", {}) #json.dumps(ideas)
+    return render(request, "idea/filter-ideas.html", {})
 
 def getAllIdeas(request):
     if not request.user.is_authenticated():
@@ -100,6 +99,13 @@ def getAllIdeas(request):
     ideas = Idea.objects.all().order_by('-meta_created_at')
     #print(ideas.__len__())
     return render(request, "idea/view-ideas.html", {'ideas': ideas})
+
+def getUserOwnIdeas(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse_lazy("authApp:getLogin"))
+    ideas = Idea.objects.filter(user=request.user).order_by('-meta_created_at')
+    #print(ideas.__len__())
+    return render(request, "idea/view-own-ideas.html", {'ideas': ideas})
 
 def getIdeaById(request, ideaId):
 	if not request.user.is_authenticated():
