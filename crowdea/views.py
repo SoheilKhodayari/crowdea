@@ -15,3 +15,11 @@ def index(request):
     context_vars = {"user": request.user}
     return render(request, 'index.html', context_vars)
 
+
+
+def getLandingIndex(request):
+	
+	context_vars = {}
+	if request.user.is_authenticated():
+		context_vars["user"] =  request.user
+	return render(request, "landing.html", context_vars)

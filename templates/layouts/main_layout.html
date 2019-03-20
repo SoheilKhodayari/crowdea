@@ -2,31 +2,141 @@
 {% load staticfiles %}
 <html lang="en">
 <head>
-	<title>Crowdea | Idea Management</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="{% static 'libs/bootstrap/bootstrap.4.1.min.css' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crowdea | Idea Management</title>
+    <meta name="description" content="Idea Management Website">
+    <link rel="stylesheet" href="{% static 'libs/bootstrap/bootstrap.4.1.min.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/styles-merged.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/style.min.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/custom.css' %}">
 
-	<!-- Begin extend stylesheets -->
-	{% block stylesheet %}
-	{% endblock %}
-	<!-- End extend stylesheets -->
-</head>
+    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'libs/bootstrap/bootstrap.4.1.min.css' %}">
+    <!--[if lt IE 9]>
+      <script src="{% static 'landing/js/vendor/html5shiv.min.js' %}"></script>
+      <script src="{% static 'landing/js/vendor/respond.min.js' %}"></script>
+    <![endif]-->
+
+  <!-- Begin extend stylesheets -->
+  {% block stylesheet %}
+      <style>
+        body {
+            background-image: url("../../static/assets/auth_background.jpg");
+            background-repeat: no-repeat;
+        }
+      </style>
+  {% endblock %}
+  <!-- End extend stylesheets -->
+  </head>
 <body>
+
+<!-- START: header -->
+  <header role="banner" class="probootstrap-header">
+    <div class="container-fluid">
+      <!-- <div class="row"> -->
+        <a href="index.html" class="probootstrap-logo">Crow<span>dea</span><span></span></a>
+
+        <a href="#" class="probootstrap-burger-menu visible-xs" ><i>Menu</i></a>
+        <div class="mobile-menu-overlay"></div>
+
+        <nav role="navigation" class="probootstrap-nav hidden-xs">
+          <ul class="probootstrap-main-nav">
+              <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'ideaApp:getAllIdeas' %}">Explore ideas</a></li>
+            <li><a href="{% url 'ideaApp:getAddIdea' %}">Publish idea</a></li>
+              <li><a href="{% url 'ideaApp:getUserOwnIdeas' %}">Your ideas</a></li>
+            <li><a href="{% url 'campaignApp:getAllCampaigns' %}">Campaigns</a></li>
+            <li><a href="{% url 'authApp:getLogout' %}">Log out</a></li>
+          </ul>
+          <div class="extra-text visible-xs">
+            <a href="#" class="probootstrap-burger-menu"><i>Menu</i></a>
+            <h5>Social</h5>
+            <ul class="social-buttons">
+              <li><a href="#"><i class="icon-twitter"></i></a></li>
+              <li><a href="#"><i class="icon-facebook"></i></a></li>
+              <li><a href="#"><i class="icon-instagram2"></i></a></li>
+            </ul>
+            <p><small>&copy; Copyright 2018. All Rights Reserved.</small></p>
+          </div>
+        </nav>
+
+  {% block headerextra %}
+  {% endblock %}
+
+    <!-- </div> -->
+    </div>
+  </header>
+  <!-- END: header -->
 
 <!-- Begin main content -->
 {% block content %}
 {% endblock %}
 <!-- End main content -->
 
-<!-- Begin extend js -->
+<!-- START: footer -->
+  <footer role="contentinfo" class="probootstrap-footer">
+    <div class="container" style="justify-content: center">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="probootstrap-footer-widget">
+            <h3>About</h3>
+            <p>Crowdea is an open-source idea management tool to leverage the power of crowd so as to polish your ideas and make it into reality. Never give up on your idea with our crowd-funding platform.</p>
+            <p><a href="#" class="link-with-icon">Learn More <i class=" icon-chevron-right"></i></a></p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="probootstrap-footer-widget">
+            <h3>Contact</h3>
+            <ul class="probootstrap-contact-info">
+              <li><i class="icon-location2"></i> <span>UPM Scientific and Technological Park Montegancedo Campus, s / n, 28223</span></li>
+              <li><i class="icon-mail"></i><span>admin@crowdea.com</span></li>
+              <li><i class="icon-phone2"></i><span>+123 456 7890</span></li>
+            </ul>
+
+          </div>
+        </div>
+          <div class="col-md-4">
+          <div class="probootstrap-footer-widget">
+              <h3>Pages</h3>
+              <p><a href="#" class="link-with-icon">Ideas<i class=" icon-chevron-right"></i></a></p>
+              <p><a href="#" class="link-with-icon">Campagins <i class=" icon-chevron-right"></i></a></p>
+              <p><a href="#" class="link-with-icon">Fund an Idea<i class=" icon-chevron-right"></i></a></p>
+              <p><a href="#" class="link-with-icon">Brainstorming<i class=" icon-chevron-right"></i></a></p>
+            </div>
+        </div>
+      </div>
+      <div class="row mt40">
+        <div class="col-md-12 text-center">
+          <ul class="probootstrap-footer-social">
+            <li><a href=""><i class="icon-twitter"></i></a></li>
+            <li><a href=""><i class="icon-facebook"></i></a></li>
+            <li><a href=""><i class="icon-instagram2"></i></a></li>
+          </ul>
+          <p>
+            <small>&copy; 2018 <a href="#" target="_blank">Crowdea</a>. All Rights Reserved.
+            </small>
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- END: footer -->
+
 <script type="text/javascript" src="{% static 'libs/bootstrap/jquery-3.3.1.slim.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'libs/bootstrap/popper.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'libs/bootstrap/bootstrap.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'libs/jquery/jquery.3.3.1.min.js' %}"></script>
-{% block js %}
+  <script type="text/javascript" src="{% static 'libs/bootstrap/popper.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'libs/bootstrap/bootstrap.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'libs/jquery/jquery.3.3.1.min.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'landing/js/scripts.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'landing/js/main.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'landing/js/custom.js' %}"></script>
 
 
-{% endblock %}
-<!-- End extend js -->
+  <!-- Begin extend js -->
+  {% block js %}
+  {% endblock %}
+  <!-- End extend js -->
 </body>
 </html>

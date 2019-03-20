@@ -1,0 +1,59 @@
+{% extends "../layouts/main_layout.html" %}
+{% load staticfiles %}
+
+{% block stylesheet %}
+<!-- Website Font style -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="{% static 'css/idea/add-idea.css' %}">
+{% endblock %}
+
+{% block headerextra %}
+{% endblock %}
+
+{% block content %}
+  <div class="container div-main-content">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Edit Idea: {{ idea.title }}</h5>
+            <form class="form-signin" method="post" action="{% url 'ideaApp:postEditIdea' idea.pk %}">
+              {% csrf_token %}
+
+              <div class="reg-box form-label-group">
+                <p class="reg-info" style="padding-left:0px">[*] all fields marked with asteriks are compulsory</p>
+              </div>
+
+              <div class="input-group">
+                <p>* Idea text:</p>
+                <textarea rows="5" style="margin-left: 10px;" type="text" id="ideatext" name="idea-text" class="form-control" placeholder="text" required>{{ idea.idea }}</textarea>
+              </div>
+
+              <div class="input-group">
+                 <p>* Active?</p>
+                <input style="margin-left: 25px" type="checkbox" id="ideaActive" name="is-active">
+
+              </div>
+
+
+              <div class="btn-row">
+                <button class="submit-btn btn btn-lg btn-primary" type="submit">Edit idea</button>
+                <!--<button class="btn btn-lg btn-success">
+                <a href="#"> <span class="glyphicon glyphicon-circle-arrow-left">
+                </span> Back to idea list</a></button>-->
+                  <a href="{% url 'ideaApp:getIdeaById' idea.pk %}" class="btn btn-xs btn-success" style="margin-top: 10px;">
+                        <span class=""></span> Back to idea details
+                  </a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block js %}
+{% endblock %}
