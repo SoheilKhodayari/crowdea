@@ -1,4 +1,6 @@
 # crowdea
+[![CircleCI](https://circleci.com/bb/crowdea/crowdea/tree/develop.svg?style=svg)](https://circleci.com/bb/crowdea/crowdea/tree/develop)
+
 An open-source idea-management website with crowd-sourcing, crowd-funding and market-testing capabilities.
 
 ## Dependencies & Installation
