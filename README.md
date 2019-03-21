@@ -1,5 +1,5 @@
 # crowdea
-[![CircleCI](https://circleci.com/bb/crowdea/crowdea/tree/develop.svg?style=svg&circle-token=79a3df7619adb6e30f155aab68340401c217d45d)](https://circleci.com/bb/crowdea/crowdea/tree/develop)
+[![CircleCI](https://circleci.com/bb/crowdea/crowdea/tree/develop.svg?style=svg&circle-token=79a3df7619adb6e30f155aab68340401c217d45d)](https://circleci.com/bb/crowdea/crowdea/)
 
 An open-source idea-management website with crowd-sourcing, crowd-funding and market-testing capabilities.
 
